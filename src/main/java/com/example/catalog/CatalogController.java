@@ -1,8 +1,9 @@
 package com.example.catalog;
 
-import javafx.fxml.FXML;
-import javafx.scene.control.Label;
+import javafx.event.ActionEvent;
 
 public class CatalogController {
+    public void additem(ActionEvent actionEvent){
 
+    }
 }

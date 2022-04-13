@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.Blend?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.paint.LinearGradient?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.shape.Polyline?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="334.0" prefWidth="649.0" style="-fx-background-color: #F5EEF8;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.CatalogApp.Controller">
+   <children>
+      <VBox prefHeight="442.0" prefWidth="54.0" style="-fx-background-color: #9B59B6;">
+         <children>
+            <Pane prefHeight="146.0" prefWidth="172.0">
+               <children>
+                  <Polyline layoutX="50.0" layoutY="40.0" points="-50.0, -40.0, 0.8000068664550781, -39.999996185302734, -25.300012588500977, 56.0, -50.0000114440918, -39.999996185302734" stroke="#1f618d" strokeType="INSIDE">
+                     <fill>
+                        <LinearGradient endX="0.9734848195856268" endY="1.0" startX="1.0" startY="0.3787879510359331">
+                           <stops>
+                              <Stop>
+                                 <color>
+                                    <Color red="0.891903817653656" green="0.7388693690299988" blue="0.9684210419654846" />
+                                 </color>
+                              </Stop>
+                              <Stop offset="1.0">
+                                 <color>
+                                    <Color red="1.0" green="1.0" blue="1.0" />
+                                 </color>
+                              </Stop>
+                           </stops>
+                        </LinearGradient>
+                     </fill>
+                  </Polyline>
+                  <Label layoutX="51.0" layoutY="55.0" prefHeight="39.0" prefWidth="138.0" text="Listeleee" textFill="WHITE">
+                     <font>
+                        <Font size="25.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+            <Line endX="62.49287414550781" endY="0.8928932547569275" startX="-100.0" stroke="#8e44ad" />
+            <Button mnemonicParsing="false" onAction="#additem" prefHeight="48.0" prefWidth="163.0" style="-fx-background-color: #9B59B6;" text="Add item" textFill="WHITE">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Button>
+            <Line endX="63.29286193847656" endY="3.826618012681138E-6" startX="-100.0" stroke="#8e44ad" />
+            <Button disable="true" mnemonicParsing="false" prefHeight="48.0" prefWidth="179.0" style="-fx-background-color: #9B59B6;" text="Search item" textFill="WHITE">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Button>
+            <Line endX="61.69288635253906" endY="1.6928870677947998" startX="-100.0" stroke="#8e44ad" />
+            <Button disable="true" mnemonicParsing="false" prefHeight="48.0" prefWidth="200.0" style="-fx-background-color: #9B59B6;" text="Help" textFill="WHITE">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Button>
+            <Line endX="61.69288635253906" startX="-100.0" stroke="#8e44ad" />
+            <Button mnemonicParsing="false" prefHeight="48.0" prefWidth="173.0" style="-fx-background-color: #9B59B6;" text="Exit" textFill="WHITE">
+               <cursor>
+                  <Cursor fx:constant="TEXT" />
+               </cursor>
+               <effect>
+                  <Blend mode="LIGHTEN" />
+               </effect>
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Button>
+            <Line endX="57.59291076660156" endY="-0.20711897313594818" startX="-100.0" stroke="#8e44ad" />
+         </children>
+      </VBox>
+      <Pane layoutX="165.0" layoutY="83.0" prefHeight="125.0" prefWidth="486.0" style="-fx-background-color: #E8DAEF;" />
+   </children>
+</AnchorPane>
