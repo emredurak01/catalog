@@ -7,7 +7,6 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.util.Objects;
-import java.util.Scanner;
 
 public class CatalogApplication extends Application {
     @Override
@@ -21,9 +20,12 @@ public class CatalogApplication extends Application {
     public static void main(String[] args) {
         //launch(args);
 
-        Types types = new Types("Book");
-        System.out.println(types.getType("Book"));
-        
+        Types types = new Types();
+
+        Type type = new Type("Book");
+        types.addType(type);
+        types.getType("Book");
+
 
 
     }

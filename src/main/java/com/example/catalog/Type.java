@@ -30,8 +30,11 @@ public class Type {
         }
 
     }
-
     public String getName() {
         return name;
+    }
+
+    public List<String> getFields() {
+        return fields;
     }
 }

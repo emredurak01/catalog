@@ -5,17 +5,17 @@ import java.util.List;
 
 public class Types {
     private List<Type> types = new ArrayList<>();
-    public Types(String name) {
-        Type type = new Type(name);
-        createType(type);
-    }
 
     public List<Type> getAll() {
         return types;
     }
 
-    public void createType(Type type) {
-        types.add(type);
+    public void addType(Type type) {
+        if(types.contains(type)) {
+            System.out.println("This type already exists.");
+        } else {
+            types.add(type);
+        }
     }
 
     public void removeType(Type type) {
