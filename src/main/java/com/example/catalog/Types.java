@@ -4,23 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Types {
-    private List<Type> types;
-    private Type type;
+    private List<Type> types = new ArrayList<>();
     public Types(String name) {
-        this.type = new Type(name);
-        types = new ArrayList<>();
+        Type type = new Type(name);
+        createType(type);
     }
 
     public List<Type> getAll() {
         return types;
     }
 
-    public void addType(Type type) {
-        if(types.contains(type)) {
-            System.out.println("This type already exists.");
-        } else {
-            types.add(type);
-        }
+    public void createType(Type type) {
+        types.add(type);
     }
 
     public void removeType(Type type) {
@@ -29,10 +24,14 @@ public class Types {
         } else {
             types.remove(type);
         }
-
     }
 
-    public Type getType() {
-        return type;
+    public Type getType(String name) {
+       for(int i = 0; i < types.size(); i++) {
+            if(types.get(i).getName().equals(name)) {
+                return types.get(i);
+            }
+       }
+        return null;
     }
 }

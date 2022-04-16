@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.util.Objects;
+import java.util.Scanner;
 
 public class CatalogApplication extends Application {
     @Override
@@ -21,13 +22,8 @@ public class CatalogApplication extends Application {
         //launch(args);
 
         Types types = new Types("Book");
-        types.addType(types.getType());
-        types.getType().addField("Name");
-        types.getType().addField("Author");
-        types.getType().removeField("Publisher");
-
-        types.removeType(types.getType());
-        types.removeType(types.getType());
+        System.out.println(types.getType("Book"));
+        
 
 
     }
