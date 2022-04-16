@@ -18,6 +18,17 @@ public class CatalogApplication extends Application {
     }
 
     public static void main(String[] args) {
-        launch(args);
+        //launch(args);
+
+        Types types = new Types("Book");
+        types.addType(types.getType());
+        types.getType().addField("Name");
+        types.getType().addField("Author");
+        types.getType().removeField("Publisher");
+
+        types.removeType(types.getType());
+        types.removeType(types.getType());
+
+
     }
 }
