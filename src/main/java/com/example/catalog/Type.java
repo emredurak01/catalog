@@ -9,8 +9,6 @@ import java.util.List;
 public class Type {
 
     private String name;
-
-
     private final List<String> fields;
 
     /**
@@ -53,16 +51,25 @@ public class Type {
         setName(newName);
     }
 
-    public void editField(String oldField, String newField) throws FieldExistException {
-        for(int i = 0; i < fields.size(); i++) {
-            if(fields.contains(name) || fields.contains(newField)) {
-                throw new FieldExistException();
-            }
-            else if(fields.contains(oldField)) {
-                fields.set(i, newField);
-            }
+    /**
+     * @param name old field name
+     * @param newName new field name
+     * @throws FieldNotExistException if field with old name does not exist
+     * @throws FieldExistException if field with new name exists
+     */
+    public void editField(String name, String newName) throws FieldNotExistException, FieldExistException {
+        int index = fields.indexOf(name);
+
+        if (index == -1) {
+            throw new FieldNotExistException();
         }
+
+        if(fields.contains(newName)) {
+            throw new FieldExistException();
+        }
+        fields.set(index, newName);
     }
+
     public void setName(String name) {
         this.name = name;
     }
