@@ -49,7 +49,20 @@ public class Type {
         }
         fields.remove(field);
     }
+    public void editName(String newName) {
+        setName(newName);
+    }
 
+    public void editField(String oldField, String newField) throws FieldExistException {
+        for(int i = 0; i < fields.size(); i++) {
+            if(fields.contains(name) || fields.contains(newField)) {
+                throw new FieldExistException();
+            }
+            else if(fields.contains(oldField)) {
+                fields.set(i, newField);
+            }
+        }
+    }
     public void setName(String name) {
         this.name = name;
     }
