@@ -27,7 +27,7 @@ public class Type {
     }
 
     /**
-     * @param field name of on-existing field type to be added to fields
+     * @param field name of non-existing field type to be added to fields
      * @throws FieldExistException if fields exists
      */
     public void addField(String field) throws FieldExistException {
