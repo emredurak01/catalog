@@ -1,37 +1,72 @@
 package com.example.catalog;
 
+
+import com.example.catalog.exception.type.TypeExistException;
+import com.example.catalog.exception.type.TypeNotExistException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Types {
-    private List<Type> types = new ArrayList<>();
+
+    /**
+     * list to store types
+     */
+    private final List<Type> types;
+
+    /**
+     * types is initially empty
+     */
+    public Types() {
+        types = new ArrayList<>();
+    }
+
+    /**
+     * @return all types
+     */
 
     public List<Type> getAll() {
         return types;
     }
 
-    public void addType(Type type) {
-        if(types.contains(type)) {
-            System.out.println("This type already exists.");
-        } else {
+
+    /**
+     * @param type non-existing type to be added to types
+     * @throws TypeExistException if type exists
+     */
+    public void add(Type type) throws TypeExistException {
+        try {
+            get(type.getName());
+            throw new TypeExistException();
+        } catch (TypeNotExistException e) {
+
             types.add(type);
         }
     }
 
-    public void removeType(Type type) {
+
+    /**
+     * @param type existing type to be removed from types
+     * @throws TypeNotExistException if type does not exist
+     */
+    public void remove(Type type) throws TypeNotExistException {
         if(!types.contains(type)) {
-            System.out.println("This type does not exists.");
-        } else {
-            types.remove(type);
+            throw new TypeNotExistException();
         }
+        types.remove(type);
     }
 
-    public Type getType(String name) {
-       for(int i = 0; i < types.size(); i++) {
-            if(types.get(i).getName().equals(name)) {
-                return types.get(i);
+    /**
+     * @param name existing type name to search in types
+     * @return type by name
+     * @throws TypeNotExistException if type does not exist
+     */
+    public Type get(String name) throws TypeNotExistException {
+        for (Type type : types) {
+            if (type.getName().equals(name)) {
+                return type;
             }
-       }
-        return null;
+        }
+        throw new TypeNotExistException();
+
     }
 }

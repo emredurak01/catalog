@@ -1,86 +1,88 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.Cursor?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.effect.Blend?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.paint.Color?>
-<?import javafx.scene.paint.LinearGradient?>
-<?import javafx.scene.paint.Stop?>
-<?import javafx.scene.shape.Line?>
-<?import javafx.scene.shape.Polyline?>
-<?import javafx.scene.text.Font?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="334.0" prefWidth="649.0" style="-fx-background-color: #F5EEF8;"
-            xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.example.catalog.CatalogController">
+<AnchorPane prefHeight="334.0" prefWidth="649.0" style="-fx-background-color: #F5EEF8;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.catalog.CatalogController">
    <VBox prefHeight="442.0" prefWidth="54.0" style="-fx-background-color: #9B59B6;">
-      <Pane prefHeight="146.0" prefWidth="172.0">
-         <Polyline layoutX="50.0" layoutY="40.0"
-                   points="-50.0, -40.0, 0.8000068664550781, -39.999996185302734, -25.300012588500977, 56.0, -50.0000114440918, -39.999996185302734"
-                   stroke="#1f618d" strokeType="INSIDE">
+      <Pane prefHeight="146.0" prefWidth="165.0">
+         <Polyline layoutX="50.0" layoutY="40.0" points="-50.0, -40.0, 0.8000068664550781, -39.999996185302734, -25.300012588500977, 56.0, -50.0000114440918, -39.999996185302734" stroke="#1f618d" strokeType="INSIDE">
             <fill>
                <LinearGradient endX="0.9734848195856268" startX="1.0" startY="0.3787879510359331">
                   <stops>
                      <Stop>
                         <color>
-                           <Color red="0.891903817653656" green="0.7388693690299988" blue="0.9684210419654846"/>
+                           <Color red="0.891903817653656" green="0.7388693690299988" blue="0.9684210419654846" />
                         </color>
                      </Stop>
                      <Stop offset="1.0">
                         <color>
-                           <Color red="1.0" green="1.0" blue="1.0"/>
+                           <Color red="1.0" green="1.0" blue="1.0" />
                         </color>
                      </Stop>
                   </stops>
                </LinearGradient>
             </fill>
          </Polyline>
-         <Label layoutX="51.0" layoutY="55.0" prefHeight="39.0" prefWidth="138.0" text="Listeleee"
-                textFill="WHITE">
+         <Label layoutX="51.0" layoutY="55.0" prefHeight="39.0" prefWidth="138.0" text="catalog" textFill="WHITE">
             <font>
-               <Font size="25.0"/>
+               <Font size="25.0" />
             </font>
          </Label>
       </Pane>
-      <Line endX="62.49287414550781" endY="0.8928932547569275" startX="-100.0" stroke="#8e44ad"/>
-      <Button mnemonicParsing="false" prefHeight="48.0" prefWidth="163.0" style="-fx-background-color: #9B59B6;"
-              text="Add item" textFill="WHITE">
-         <font>
-            <Font size="15.0"/>
-         </font>
-      </Button>
-      <Line endX="63.29286193847656" endY="3.826618012681138E-6" startX="-100.0" stroke="#8e44ad"/>
-      <Button disable="true" mnemonicParsing="false" prefHeight="48.0" prefWidth="179.0"
-              style="-fx-background-color: #9B59B6;" text="Search item" textFill="WHITE">
-         <font>
-            <Font size="15.0"/>
-         </font>
-      </Button>
-      <Line endX="61.69288635253906" endY="1.6928870677947998" startX="-100.0" stroke="#8e44ad"/>
-      <Button disable="true" mnemonicParsing="false" prefHeight="48.0" prefWidth="200.0"
-              style="-fx-background-color: #9B59B6;" text="Help" textFill="WHITE">
-         <font>
-            <Font size="15.0"/>
-         </font>
-      </Button>
-      <Line endX="61.69288635253906" startX="-100.0" stroke="#8e44ad"/>
-      <Button mnemonicParsing="false" prefHeight="48.0" prefWidth="173.0" style="-fx-background-color: #9B59B6;"
-              text="Exit" textFill="WHITE">
+      <Line endX="62.49287414550781" endY="0.8928932547569275" startX="-100.0" stroke="#8e44ad" />
+      <Button fx:id="addTypeButton" mnemonicParsing="false" prefHeight="48.0" prefWidth="163.0" style="-fx-background-color: #9B59B6;" text="add type" textFill="WHITE">
          <cursor>
-            <Cursor fx:constant="TEXT"/>
+            <Cursor fx:constant="HAND" />
          </cursor>
-         <effect>
-            <Blend mode="LIGHTEN"/>
-         </effect>
          <font>
-            <Font size="15.0"/>
+            <Font size="15.0" />
          </font>
       </Button>
-      <Line endX="57.59291076660156" endY="-0.20711897313594818" startX="-100.0" stroke="#8e44ad"/>
+      <Line endX="63.29286193847656" endY="3.826618012681138E-6" startX="-100.0" stroke="#8e44ad" />
+      <Button disable="true" mnemonicParsing="false" prefHeight="48.0" prefWidth="179.0" style="-fx-background-color: #9B59B6;" text="search item" textFill="WHITE">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Button>
+      <Line endX="61.69288635253906" endY="1.6928870677947998" startX="-100.0" stroke="#8e44ad" />
+      <Button disable="true" mnemonicParsing="false" prefHeight="48.0" prefWidth="200.0" style="-fx-background-color: #9B59B6;" text="help" textFill="WHITE">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Button>
+      <Line endX="61.69288635253906" startX="-100.0" stroke="#8e44ad" />
+      <Button fx:id="exitButton" mnemonicParsing="false" prefHeight="48.0" prefWidth="173.0" style="-fx-background-color: #9B59B6;" text="exit" textFill="WHITE">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Button>
+      <Line endX="57.59291076660156" endY="-0.20711897313594818" startX="-100.0" stroke="#8e44ad" />
    </VBox>
-   <Pane layoutX="165.0" layoutY="83.0" prefHeight="125.0" prefWidth="486.0" style="-fx-background-color: #E8DAEF;"/>
+    <MenuBar prefHeight="25.0" prefWidth="651.0">
+        <Menu mnemonicParsing="false" text="File">
+            <MenuItem mnemonicParsing="false" text="Close"/>
+        </Menu>
+        <Menu mnemonicParsing="false" text="Edit">
+            <MenuItem mnemonicParsing="false" text="Delete"/>
+        </Menu>
+        <Menu mnemonicParsing="false" text="Help">
+            <MenuItem mnemonicParsing="false" text="About"/>
+        </Menu>
+    </MenuBar>
+   <Pane layoutX="165.0" layoutY="83.0" prefHeight="125.0" prefWidth="486.0" style="-fx-background-color: #E8DAEF;" />
+   <TreeView fx:id="view" layoutX="165.0" layoutY="208.0" prefHeight="200.0" prefWidth="200.0" />
 </AnchorPane>
