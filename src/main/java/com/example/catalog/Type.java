@@ -1,14 +1,15 @@
 package com.example.catalog;
 
+
 import com.example.catalog.exception.field.FieldExistException;
 import com.example.catalog.exception.field.FieldNotExistException;
 import javafx.scene.control.TreeItem;
-
 import java.util.List;
 
 public class Type {
 
     private String name;
+
 
     private final List<String> fields;
 
@@ -64,4 +65,5 @@ public class Type {
     public TreeItem<String> getNode() {
         return node;
     }
+
 }
