@@ -35,7 +35,7 @@
          </Label>
       </Pane>
       <Line endX="62.49287414550781" endY="0.8928932547569275" startX="-100.0" stroke="#8e44ad" />
-      <Button fx:id="addTypeButton" mnemonicParsing="false" prefHeight="48.0" prefWidth="163.0" style="-fx-background-color: #9B59B6;" text="add type" textFill="WHITE">
+      <Button fx:id="addTypeButton" mnemonicParsing="false" prefHeight="48.0" prefWidth="163.0" style="-fx-background-color: #9B59B6;" text="Add Type" textFill="WHITE">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
@@ -44,7 +44,7 @@
          </font>
       </Button>
       <Line endX="63.29286193847656" endY="3.826618012681138E-6" startX="-100.0" stroke="#8e44ad" />
-      <Button disable="true" mnemonicParsing="false" prefHeight="48.0" prefWidth="179.0" style="-fx-background-color: #9B59B6;" text="search item" textFill="WHITE">
+      <Button disable="true" mnemonicParsing="false" prefHeight="48.0" prefWidth="179.0" style="-fx-background-color: #9B59B6;" text="Search Item" textFill="WHITE">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
@@ -53,7 +53,7 @@
          </font>
       </Button>
       <Line endX="61.69288635253906" endY="1.6928870677947998" startX="-100.0" stroke="#8e44ad" />
-      <Button disable="true" mnemonicParsing="false" prefHeight="48.0" prefWidth="200.0" style="-fx-background-color: #9B59B6;" text="help" textFill="WHITE">
+      <Button disable="true" mnemonicParsing="false" prefHeight="48.0" prefWidth="200.0" style="-fx-background-color: #9B59B6;" text="Help" textFill="WHITE">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
@@ -62,7 +62,7 @@
          </font>
       </Button>
       <Line endX="61.69288635253906" startX="-100.0" stroke="#8e44ad" />
-      <Button fx:id="exitButton" mnemonicParsing="false" prefHeight="48.0" prefWidth="173.0" style="-fx-background-color: #9B59B6;" text="exit" textFill="WHITE">
+      <Button fx:id="exitButton" mnemonicParsing="false" prefHeight="48.0" prefWidth="173.0" style="-fx-background-color: #9B59B6;" text="Exit" textFill="WHITE">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
@@ -74,13 +74,13 @@
    </VBox>
     <MenuBar prefHeight="25.0" prefWidth="651.0">
         <Menu mnemonicParsing="false" text="File">
-            <MenuItem mnemonicParsing="false" text="Close"/>
+            <MenuItem mnemonicParsing="false" text="Close" />
         </Menu>
         <Menu mnemonicParsing="false" text="Edit">
-            <MenuItem mnemonicParsing="false" text="Delete"/>
+            <MenuItem mnemonicParsing="false" text="Delete" />
         </Menu>
         <Menu mnemonicParsing="false" text="Help">
-            <MenuItem mnemonicParsing="false" text="About"/>
+            <MenuItem mnemonicParsing="false" text="About" />
         </Menu>
     </MenuBar>
    <Pane layoutX="165.0" layoutY="83.0" prefHeight="125.0" prefWidth="486.0" style="-fx-background-color: #E8DAEF;" />
