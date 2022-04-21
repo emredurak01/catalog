@@ -6,7 +6,7 @@ import com.example.catalog.exception.type.TypeNotExistException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Types {
+public class TypeContainer {
 
     /**
      * list to store types
@@ -16,7 +16,7 @@ public class Types {
     /**
      * types is initially empty
      */
-    public Types() {
+    public TypeContainer() {
         types = new ArrayList<>();
     }
 
