@@ -1,11 +1,13 @@
 package com.example.catalog;
 
+import com.example.catalog.exception.item.ItemExistException;
 import com.example.catalog.exception.type.TypeExistException;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,6 +18,7 @@ public class CatalogController {
      */
     private final Types types = new Types();
 
+    private final Items items = new Items();
     @FXML
     private TreeView<String> view;
 
@@ -24,8 +27,13 @@ public class CatalogController {
 
     @FXML Button exitButton;
 
+
     @FXML
-    private void initialize() {
+    private void initialize() throws ItemExistException {
+        List<String> field = new ArrayList<String>();
+        field.add("x");
+        items.addItem(new Item("Cars",field));
+        System.out.println(items.getAll().size());
         view.setRoot(new TreeItem<>()); // root contains type nodes
         view.getRoot().setExpanded(true); // children are showed by default
         // event bindings

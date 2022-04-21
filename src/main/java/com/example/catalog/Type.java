@@ -1,7 +1,7 @@
 package com.example.catalog;
 
 
-import com.example.catalog.exception.field.FieldExistException;
+import com.example.catalog.exception.field.TypeExistException;
 import com.example.catalog.exception.field.FieldNotExistException;
 import javafx.scene.control.TreeItem;
 import java.util.List;
@@ -28,11 +28,11 @@ public class Type {
 
     /**
      * @param field name of non-existing field type to be added to fields
-     * @throws FieldExistException if fields exists
+     * @throws TypeExistException if fields exists
      */
-    public void addField(String field) throws FieldExistException {
+    public void addField(String field) throws TypeExistException {
         if(fields.contains(field)) {
-            throw new FieldExistException();
+            throw new TypeExistException();
         }
         fields.add(field);
     }
@@ -55,9 +55,9 @@ public class Type {
      * @param name old field name
      * @param newName new field name
      * @throws FieldNotExistException if field with old name does not exist
-     * @throws FieldExistException if field with new name exists
+     * @throws TypeExistException if field with new name exists
      */
-    public void editField(String name, String newName) throws FieldNotExistException, FieldExistException {
+    public void editField(String name, String newName) throws FieldNotExistException, TypeExistException {
         int index = fields.indexOf(name);
 
         if (index == -1) {
@@ -65,7 +65,7 @@ public class Type {
         }
 
         if(fields.contains(newName)) {
-            throw new FieldExistException();
+            throw new TypeExistException();
         }
         fields.set(index, newName);
     }

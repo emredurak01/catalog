@@ -2,9 +2,9 @@ package com.example.catalog.exception.field;
 
 import com.example.catalog.exception.CatalogException;
 
-public class FieldExistException extends CatalogException {
+public class TypeExistException extends CatalogException {
 
-    public FieldExistException() {
+    public TypeExistException() {
         super("field exists");
     }
 }
