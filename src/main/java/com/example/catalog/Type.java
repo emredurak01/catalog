@@ -9,7 +9,7 @@ import java.util.List;
 public class Type {
 
     private String name;
-    private final List<String> fields;
+    private final List<String> fieldValues;
 
     /**
      * stores nodes of items of this type
@@ -18,11 +18,11 @@ public class Type {
 
     /**
      * @param name key
-     * @param fields field types
+     * @param fieldValues field types
      */
-    public Type(String name, List<String> fields) {
+    public Type(String name, List<String> fieldValues) {
         this.name = name;
-        this.fields = fields;
+        this.fieldValues = fieldValues;
         node = new TreeItem<>(name);
     }
 
@@ -31,10 +31,10 @@ public class Type {
      * @throws TypeExistException if fields exists
      */
     public void addField(String field) throws TypeExistException {
-        if(fields.contains(field)) {
+        if(fieldValues.contains(field)) {
             throw new TypeExistException();
         }
-        fields.add(field);
+        fieldValues.add(field);
     }
 
     /**
@@ -42,10 +42,10 @@ public class Type {
      * @throws FieldNotExistException if field does not exist
      */
     public void removeField(String field) throws FieldNotExistException {
-        if(!fields.contains(field)) {
+        if(!fieldValues.contains(field)) {
             throw new FieldNotExistException();
         }
-        fields.remove(field);
+        fieldValues.remove(field);
     }
     public void editName(String newName) {
         setName(newName);
@@ -58,16 +58,16 @@ public class Type {
      * @throws TypeExistException if field with new name exists
      */
     public void editField(String name, String newName) throws FieldNotExistException, TypeExistException {
-        int index = fields.indexOf(name);
+        int index = fieldValues.indexOf(name);
 
         if (index == -1) {
             throw new FieldNotExistException();
         }
 
-        if(fields.contains(newName)) {
+        if(fieldValues.contains(newName)) {
             throw new TypeExistException();
         }
-        fields.set(index, newName);
+        fieldValues.set(index, newName);
     }
 
     public void setName(String name) {
@@ -78,8 +78,8 @@ public class Type {
         return name;
     }
 
-    public List<String> getFields() {
-        return fields;
+    public List<String> getFieldValues() {
+        return fieldValues;
     }
 
     public TreeItem<String> getNode() {

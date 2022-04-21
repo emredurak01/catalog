@@ -48,12 +48,6 @@ public class Item {
         tags.remove(tag);
     }
 
-
-
-
-
-
-
     public void editName(String newName){
         setName(newName);
     }

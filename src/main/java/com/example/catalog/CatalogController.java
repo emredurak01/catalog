@@ -16,9 +16,9 @@ public class CatalogController {
     /**
      * is constructed once
      */
-    private final Types types = new Types();
+    private final TypeContainer typeContainer = new TypeContainer();
 
-    private final Items items = new Items();
+    private final ItemContainer itemContainer = new ItemContainer();
     @FXML
     private TreeView<String> view;
 
@@ -32,8 +32,8 @@ public class CatalogController {
     private void initialize() throws ItemExistException {
         List<String> field = new ArrayList<String>();
         field.add("x");
-        items.addItem(new Item("Cars",field));
-        System.out.println(items.getAll().size());
+        itemContainer.addItem(new Item("Cars",field));
+        System.out.println(itemContainer.getAll().size());
         view.setRoot(new TreeItem<>()); // root contains type nodes
         view.getRoot().setExpanded(true); // children are showed by default
         // event bindings
@@ -63,7 +63,7 @@ public class CatalogController {
 
         if (result.isPresent()) {
             try {
-                types.add(result.get());
+                typeContainer.add(result.get());
                 refresh();
             } catch (TypeExistException e) { // if type exists
                 Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -86,7 +86,7 @@ public class CatalogController {
     private void refresh() {
         view.getRoot().getChildren().clear();
 
-        for (Type type : types.getAll()) {
+        for (Type type : typeContainer.getAll()) {
             view.getRoot().getChildren().add(type.getNode());
         }
     }

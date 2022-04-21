@@ -2,7 +2,6 @@ package com.example.catalog;
 
 import com.example.catalog.exception.item.ItemExistException;
 import com.example.catalog.exception.item.ItemNotExistException;
-import com.example.catalog.exception.type.TypeNotExistException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,15 +9,15 @@ import java.util.Set;
 
 
 
-public class Items {
+public class ItemContainer {
 
     private final List<Item> items;
 
-    public Items(List<Item> items) {
+    public ItemContainer(List<Item> items) {
         this.items = items;
     }
 
-    public Items() {
+    public ItemContainer() {
         items = new ArrayList<>();
     }
 
@@ -51,11 +50,6 @@ public class Items {
             throw new ItemNotExistException();
         }
         items.remove(item);
-    }
-
-    public void getItem(Item items) {
-
-
     }
 
     public List<Item> getByTags(Set<String> tags) {
