@@ -20,10 +20,12 @@ public class CatalogController {
      */
     private final TypeContainer typeContainer = new TypeContainer();
 
+
     private final ItemContainer itemContainer = new ItemContainer();
 
     @FXML
     public Button searchButton;
+
 
     @FXML
     private TreeView<String> view;
@@ -50,7 +52,9 @@ public class CatalogController {
     private Button exitButton;
 
     @FXML
+
     private void initialize() {
+
         view.setRoot(new TreeItem<>()); // root contains type nodes
         view.getRoot().setExpanded(true); // children are showed by default
         // read types and items from file

@@ -50,7 +50,9 @@ public class TypeContainer {
      * @throws TypeNotExistException if type does not exist
      */
     public void remove(Type type) throws TypeNotExistException {
+
         if (!types.contains(type)) {
+
             throw new TypeNotExistException();
         }
         types.remove(type);

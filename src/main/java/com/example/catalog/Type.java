@@ -18,7 +18,9 @@ public class Type {
     private final TreeItem<String> node;
 
     /**
+
      * @param name        key
+
      * @param fieldValues field types
      */
     public Type(String name, List<String> fieldValues) {
@@ -32,7 +34,9 @@ public class Type {
      * @throws TypeExistException if fields exists
      */
     public void addField(String field) throws TypeExistException {
+
         if (fieldValues.contains(field)) {
+
             throw new TypeExistException();
         }
         fieldValues.add(field);
@@ -43,7 +47,9 @@ public class Type {
      * @throws FieldNotExistException if field does not exist
      */
     public void removeField(String field) throws FieldNotExistException {
+
         if (!fieldValues.contains(field)) {
+
             throw new FieldNotExistException();
         }
         fieldValues.remove(field);
@@ -66,7 +72,9 @@ public class Type {
             throw new FieldNotExistException();
         }
 
+
         if (fieldValues.contains(newName)) {
+
             throw new TypeExistException();
         }
         fieldValues.set(index, newName);
