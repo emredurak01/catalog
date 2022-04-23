@@ -3,6 +3,7 @@ package com.example.catalog;
 
 import com.example.catalog.exception.type.TypeExistException;
 import com.example.catalog.exception.type.TypeNotExistException;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,7 +50,7 @@ public class TypeContainer {
      * @throws TypeNotExistException if type does not exist
      */
     public void remove(Type type) throws TypeNotExistException {
-        if(!types.contains(type)) {
+        if (!types.contains(type)) {
             throw new TypeNotExistException();
         }
         types.remove(type);
