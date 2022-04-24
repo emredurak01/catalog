@@ -7,26 +7,21 @@
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #F5EEF8;"
-            xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.example.catalog.CatalogController">
+<AnchorPane prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #F5EEF8;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.catalog.CatalogController">
     <VBox prefHeight="442.0" prefWidth="54.0" style="-fx-background-color: #9B59B6;">
         <Pane prefHeight="146.0" prefWidth="165.0">
-            <Polyline layoutX="50.0" layoutY="40.0"
-                      points="-50.0, -40.0, 0.8000068664550781, -39.999996185302734, -25.300012588500977, 56.0, -50.0000114440918, -39.999996185302734"
-                      stroke="#1f618d" strokeType="INSIDE">
+            <Polyline layoutX="50.0" layoutY="40.0" points="-50.0, -40.0, 0.8000068664550781, -39.999996185302734, -25.300012588500977, 56.0, -50.0000114440918, -39.999996185302734" stroke="#1f618d" strokeType="INSIDE">
                 <fill>
                     <LinearGradient endX="0.9734848195856268" startX="1.0" startY="0.3787879510359331">
                         <stops>
                             <Stop>
                                 <color>
-                                    <Color red="0.891903817653656" green="0.7388693690299988"
-                                           blue="0.9684210419654846"/>
+                                    <Color red="0.891903817653656" green="0.7388693690299988" blue="0.9684210419654846" />
                                 </color>
                             </Stop>
                             <Stop offset="1.0">
                                 <color>
-                                    <Color red="1.0" green="1.0" blue="1.0"/>
+                                    <Color red="1.0" green="1.0" blue="1.0" />
                                 </color>
                             </Stop>
                         </stops>
@@ -35,93 +30,89 @@
             </Polyline>
             <Label layoutX="51.0" layoutY="55.0" prefHeight="39.0" prefWidth="138.0" text="catalog" textFill="WHITE">
                 <font>
-                    <Font size="25.0"/>
+                    <Font size="25.0" />
                 </font>
             </Label>
         </Pane>
-        <Line endX="62.49287414550781" endY="0.8928932547569275" startX="-100.0" stroke="#8e44ad"/>
-        <Button disable="true" mnemonicParsing="false" prefHeight="48.0" prefWidth="163.0"
-                style="-fx-background-color: #9B59B6;" text="Settings" textFill="WHITE">
+        <Line endX="62.49287414550781" endY="0.8928932547569275" startX="-100.0" stroke="#8e44ad" />
+        <Button disable="true" mnemonicParsing="false" prefHeight="48.0" prefWidth="163.0" style="-fx-background-color: #9B59B6;" text="Settings" textFill="WHITE">
             <cursor>
-                <Cursor fx:constant="HAND"/>
+                <Cursor fx:constant="HAND" />
             </cursor>
 
             <font>
-                <Font size="15.0"/>
+                <Font size="15.0" />
             </font>
         </Button>
-        <Line endX="61.69288635253906" endY="1.6928870677947998" startX="-100.0" stroke="#8e44ad"/>
-        <Button fx:id="helpButton" mnemonicParsing="false" prefHeight="48.0" prefWidth="200.0"
-                style="-fx-background-color: #9B59B6;" text="Help" textFill="WHITE">
+        <Line endX="61.69288635253906" endY="1.6928870677947998" startX="-100.0" stroke="#8e44ad" />
+        <Button fx:id="helpButton" mnemonicParsing="false" prefHeight="48.0" prefWidth="200.0" style="-fx-background-color: #9B59B6;" text="Help" textFill="WHITE">
             <cursor>
-                <Cursor fx:constant="HAND"/>
+                <Cursor fx:constant="HAND" />
             </cursor>
             <font>
-                <Font size="15.0"/>
+                <Font size="15.0" />
             </font>
         </Button>
-        <Line endX="61.69288635253906" startX="-100.0" stroke="#8e44ad"/>
-        <Button fx:id="exitButton" mnemonicParsing="false" prefHeight="48.0" prefWidth="173.0"
-                style="-fx-background-color: #9B59B6;" text="Exit" textFill="WHITE">
+        <Line endX="61.69288635253906" startX="-100.0" stroke="#8e44ad" />
+        <Button fx:id="exitButton" mnemonicParsing="false" prefHeight="48.0" prefWidth="173.0" style="-fx-background-color: #9B59B6;" text="Exit" textFill="WHITE">
             <cursor>
-                <Cursor fx:constant="HAND"/>
+                <Cursor fx:constant="HAND" />
             </cursor>
             <font>
-                <Font size="15.0"/>
+                <Font size="15.0" />
             </font>
         </Button>
-        <Line endX="57.59291076660156" endY="-0.20711897313594818" startX="-100.0" stroke="#8e44ad"/>
+        <Line endX="57.59291076660156" endY="-0.20711897313594818" startX="-100.0" stroke="#8e44ad" />
+      <Line endX="61.69288635253906" endY="1.6928870677947998" layoutX="111.0" layoutY="207.0" startX="-100.0" stroke="#8e44ad" />
     </VBox>
     <MenuBar prefHeight="25.0" prefWidth="852.0">
         <Menu mnemonicParsing="false" text="File">
-            <MenuItem mnemonicParsing="false" text="Close"/>
+            <MenuItem mnemonicParsing="false" text="Close" />
         </Menu>
         <Menu mnemonicParsing="false" text="Edit">
-            <MenuItem mnemonicParsing="false" text="Delete"/>
+            <MenuItem mnemonicParsing="false" text="Delete" />
         </Menu>
         <Menu mnemonicParsing="false" text="Help">
-            <MenuItem mnemonicParsing="false" text="About"/>
+            <MenuItem mnemonicParsing="false" text="About" />
         </Menu>
     </MenuBar>
     <AnchorPane layoutX="164.0" layoutY="24.0" prefHeight="418.0" prefWidth="487.0">
-        <TreeView fx:id="view" layoutX="2.0" layoutY="54.0" prefHeight="364.0" prefWidth="321.0"/>
-        <VBox layoutX="323.0" layoutY="54.0" prefHeight="364.0" prefWidth="163.0">
-            <Button fx:id="addButton" mnemonicParsing="false" prefHeight="48.0" prefWidth="138.0"
-                    style="-fx-background-color: #9B59B6;" text="Add" textFill="WHITE">
+        <TreeView fx:id="view" layoutX="2.0" layoutY="54.0" prefHeight="364.0" prefWidth="321.0" />
+        <VBox layoutX="323.0" layoutY="54.0" prefHeight="364.0" prefWidth="138.0">
+            <Button fx:id="addButton" mnemonicParsing="false" prefHeight="48.0" prefWidth="138.0" style="-fx-background-color: #9B59B6;" text="Add" textFill="WHITE">
                 <cursor>
-                    <Cursor fx:constant="HAND"/>
+                    <Cursor fx:constant="HAND" />
                 </cursor>
                 <font>
-                    <Font size="15.0"/>
+                    <Font size="15.0" />
                 </font>
             </Button>
-            <Button fx:id="editButton" mnemonicParsing="false" prefHeight="48.0" prefWidth="138.0"
-                    style="-fx-background-color: #9B59B6;" text="Edit" textFill="WHITE">
+            <Button fx:id="editButton" mnemonicParsing="false" prefHeight="48.0" prefWidth="138.0" style="-fx-background-color: #9B59B6;" text="Edit" textFill="WHITE">
                 <cursor>
-                    <Cursor fx:constant="HAND"/>
+                    <Cursor fx:constant="HAND" />
                 </cursor>
                 <font>
-                    <Font size="15.0"/>
+                    <Font size="15.0" />
                 </font>
             </Button>
-            <Button fx:id="deleteButton" mnemonicParsing="false" prefHeight="48.0" prefWidth="138.0"
-                    style="-fx-background-color: #9B59B6;" text="Delete" textFill="WHITE">
+            <Button fx:id="deleteButton" mnemonicParsing="false" prefHeight="48.0" prefWidth="138.0" style="-fx-background-color: #9B59B6;" text="Delete" textFill="WHITE">
                 <cursor>
-                    <Cursor fx:constant="HAND"/>
+                    <Cursor fx:constant="HAND" />
                 </cursor>
                 <font>
-                    <Font size="15.0"/>
+                    <Font size="15.0" />
                 </font>
             </Button>
-        </VBox>
-        <Button disable="true" layoutX="1.0" layoutY="3.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="138.0"
-                style="-fx-background-color: #9B59B6;" text="Search" textFill="WHITE">
+         <Button fx:id="addTagButton" mnemonicParsing="false" prefHeight="48.0" prefWidth="138.0" style="-fx-background-color: #9B59B6;" text="Add Tag" textFill="WHITE">
             <cursor>
-                <Cursor fx:constant="HAND"/>
+               <Cursor fx:constant="HAND" />
             </cursor>
             <font>
-                <Font size="15.0"/>
+               <Font size="15.0" />
             </font>
-        </Button>
+         </Button>
+         <TextField />
+        </VBox>
     </AnchorPane>
+   <TableView fx:id="table" layoutY="442.0" prefHeight="200.0" prefWidth="487.0" />
 </AnchorPane>

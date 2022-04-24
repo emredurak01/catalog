@@ -5,11 +5,18 @@ import com.example.catalog.exception.item.ItemNotExistException;
 import com.example.catalog.exception.type.TypeExistException;
 import com.example.catalog.exception.type.TypeNotExistException;
 import javafx.application.Platform;
+import javafx.beans.property.ReadOnlyStringWrapper;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import javafx.beans.value.ObservableStringValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,8 +40,11 @@ public class CatalogController {
     private Button exitButton;
 
     @FXML
+    TableView<List<String>> table;
+
+    @FXML
     private void initialize() {
-        view.setRoot(new TreeItem<>(Type.PREFIX)); // the root contains the type nodes
+        view.setRoot(new TreeItem<>(Type.PREFIX)); // the root contains the type nodes, and the type nodes contain the item nodes
         view.getRoot().setExpanded(true); // the children are showed by default
         // read the types.txt and items.txt files
         // default types
@@ -55,6 +65,7 @@ public class CatalogController {
         deleteButton.setOnAction(actionEvent -> onDelete());
         helpButton.setOnAction((actionEvent -> onHelp()));
         exitButton.setOnAction(actionEvent -> onExit());
+        view.setOnMouseClicked(mouseEvent -> onSelect());
     }
 
     public void onAdd() {
@@ -63,9 +74,9 @@ public class CatalogController {
 
         if (selectedItem == null) {
             alert.setHeaderText("""
-            1. select the root to add a type
-            2. select a type to add an item
-            """);
+                    1. select the root to add a type
+                    2. select a type to add an item
+                    """);
             alert.show();
         } else if (selectedItem.getValue().equals(Type.PREFIX)) {
             onAddType(alert);
@@ -101,13 +112,13 @@ public class CatalogController {
                 content.add(new Label(type.getFieldTypes().get(i)), 0, i + 2);
                 content.add(textFields.get(i), 1, i + 2);
             }
-            List<String> fieldValues = new ArrayList<>();
-
-            for (TextField f : textFields) {
-                fieldValues.add(f.getText());
-            }
             dialog.setResultConverter(buttonType -> {
                 try {
+                    List<String> fieldValues = new ArrayList<>();
+
+                    for (TextField f : textFields) {
+                        fieldValues.add(f.getText());
+                    }
                     return new Item(name.getText(), typeContainer.get(selectedItem.getValue()), fieldValues);
                 } catch (TypeNotExistException e) {
                     alert.setHeaderText(e.getMessage());
@@ -245,13 +256,13 @@ public class CatalogController {
                     content.add(new Label(item.getType().getFieldTypes().get(i)), 0, i + 2);
                     content.add(textFields.get(i), 1, i + 2);
                 }
+                dialog.showAndWait();
+                item.setName(name.getText());
                 List<String> fieldValues = new ArrayList<>();
 
                 for (TextField f : textFields) {
                     fieldValues.add(f.getText());
                 }
-                dialog.showAndWait();
-                item.setName(name.getText());
                 item.setFieldValues(fieldValues);
             } catch (ItemNotExistException e) {
                 alert.setHeaderText(e.getMessage());
@@ -300,5 +311,49 @@ public class CatalogController {
      */
     private void onExit() {
         Platform.exit();
+    }
+
+    private void onSelect() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+
+        TreeItem<String> selectedItem = view.getSelectionModel().getSelectedItem();
+        if (selectedItem == null || selectedItem.getValue().equals(Type.PREFIX)) {
+            return;
+        }
+        table.getColumns().clear();
+        table.getItems().clear();
+
+        if (selectedItem.getValue().startsWith(Type.PREFIX)) { // a type is selected
+            try {
+                Type type = typeContainer.get(selectedItem.getValue());
+
+                for (String s : type.getFieldTypes()) {
+                    table.getColumns().add(new TableColumn<>(s));
+                }
+            } catch (TypeNotExistException e) {
+                alert.setHeaderText(e.getMessage());
+                alert.show();
+            }
+        } else {  // an item is selected
+            try {
+                Item item = itemContainer.get(selectedItem.getValue());
+
+                for (int i = 0; i < item.getType().getFieldTypes().size(); i++) {
+                    TableColumn<List<String>, String> column = new TableColumn<>(item.getType().getFieldTypes().get(i));
+                    int finalI = i;
+                    column.setCellValueFactory(e -> new SimpleStringProperty(e.getValue().get(finalI)));
+                    table.getColumns().add(column);
+                }
+                List<String> fieldValues = FXCollections.observableArrayList();
+
+                for (int i = 0; i < item.getFieldValues().size(); i++) {
+                    fieldValues.add(i, item.getFieldValues().get(i));
+                }
+                table.getItems().add(fieldValues);
+            } catch (ItemNotExistException e) {
+                alert.setHeaderText(e.getMessage());
+                alert.show();
+            }
+        }
     }
 }
