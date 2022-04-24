@@ -3,6 +3,8 @@ package com.example.catalog;
 
 import com.example.catalog.exception.type.TypeExistException;
 import com.example.catalog.exception.type.TypeNotExistException;
+import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,30 +34,33 @@ public class TypeContainer {
 
     /**
      * @param type non-existing type to be added to types
+     * @param view the tree view
      * @throws TypeExistException if type exists
      */
-    public void add(Type type) throws TypeExistException {
+    public void add(Type type, TreeView<String> view) throws TypeExistException {
         try {
             get(type.getName());
             throw new TypeExistException();
         } catch (TypeNotExistException e) {
-
             types.add(type);
+            view.getRoot().getChildren().add(type.getNode());
         }
     }
 
 
     /**
      * @param type existing type to be removed from types
+     * @param view the tree view
+     * @param itemContainer the container containing the items
      * @throws TypeNotExistException if type does not exist
      */
-    public void remove(Type type) throws TypeNotExistException {
-
+    public void remove(Type type, TreeView<String> view, ItemContainer itemContainer) throws TypeNotExistException {
         if (!types.contains(type)) {
-
             throw new TypeNotExistException();
         }
         types.remove(type);
+        view.getRoot().getChildren().remove(type.getNode());
+        itemContainer.getAll().removeIf(t -> t.getType().getName().equals(type.getName()));
     }
 
     /**
