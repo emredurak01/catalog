@@ -12,6 +12,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class CatalogController {
     private final TypeContainer typeContainer = new TypeContainer();
@@ -225,12 +226,14 @@ public class CatalogController {
         content.add(new Label("Name"), 0, 0);
         TextField name = new TextField();
         content.add(name, 1, 0);
+        content.add(new Label(), 2, 0);
         List<TextField> textFields = new ArrayList<>();
         Alert alert = new Alert(Alert.AlertType.ERROR);
 
         if (treeItem instanceof Type type) {
+            ArrayList<Integer> removedIndices = new ArrayList<>();
+            AtomicInteger addedFieldCounter = new AtomicInteger();
             dialog.setTitle("Edit type");
-
             name.setText(type.getName());
 
             for (int i = 0; i < type.getFieldTypes().size(); i++) {
@@ -238,7 +241,7 @@ public class CatalogController {
             }
 
             for (int i = 0; i < textFields.size(); i++) {
-                Label label = new Label("Field type " + (i + 1));
+                Label label = new Label("Field type ");
                 content.add(label, 0, i + 2);
                 TextField textField = textFields.get(i);
                 content.add(textField, 1, i + 2);
@@ -246,11 +249,36 @@ public class CatalogController {
                 button.setOnAction(actionEvent -> {
                     content.getChildren().remove(label);
                     content.getChildren().remove(textField);
+                    removedIndices.add(textFields.indexOf(textField));
+                    // addedFieldCounter.getAndDecrement();
                     textFields.remove(textField);
-                    itemContainer.getAll().removeIf(e -> e.getType().equals(type));
+                    content.getChildren().remove(button);
                 });
                 content.add(button, 2, i + 2);
             }
+            Button addButton = new Button(Localisation.ADD_BUTTON);
+            addButton.setOnAction(actionEvent -> {
+                TextField textField = new TextField();
+                textFields.add(textField);
+                content.addColumn(1, textField);
+                Label fieldTypeLabel = new Label("Field type");
+                content.addColumn(0, fieldTypeLabel);
+                pane.getScene().getWindow().sizeToScene();
+                Button removeFieldButton = new Button(Localisation.REMOVE_BUTTON);
+                removeFieldButton.setOnAction(event -> {
+                    content.getChildren().remove(fieldTypeLabel);
+                    content.getChildren().remove(textField);
+                    removedIndices.add(textFields.indexOf(textField));
+                    // addedFieldCounter.getAndDecrement();
+                    textFields.remove(textField);
+                    content.getChildren().remove(removeFieldButton);
+                });
+                content.getChildren().remove(addButton);
+                content.addColumn(2, removeFieldButton);
+                content.addColumn(2, addButton);
+                addedFieldCounter.getAndIncrement();
+            });
+            content.add(addButton, 2, textFields.size() + 2);
             dialog.setResultConverter(buttonType -> buttonType);
             Optional<ButtonType> result = dialog.showAndWait();
 
@@ -271,6 +299,19 @@ public class CatalogController {
                         fieldTypes.add(f.getText().trim());
                     }
                     type.setFieldTypes(fieldTypes);
+
+                    for (Item item : itemContainer.getAll()) {
+                        if (item.getType().equals(type)) {
+                            for (Integer removedIndex : removedIndices) {
+                                item.getFieldValues().set(removedIndex, null);
+                            }
+                            item.getFieldValues().removeIf(Objects::isNull);
+
+                            for (int i = 0; i < addedFieldCounter.get(); i++) {
+                                item.getFieldValues().add("");
+                            }
+                        }
+                    }
                     onSelect();
                 }
             }
@@ -289,7 +330,7 @@ public class CatalogController {
             content.add(new Label("Tags"), 0, textFields.size() + 2);
             String itemTags = item.getTags().toString();
             TextField tagsField = new TextField(itemTags.substring(1, itemTags.length() - 1));
-            tagsField.setTooltip(new Tooltip("test"));
+            tagsField.setPromptText("tag1, tag2, ...");
             content.add(tagsField, 1, textFields.size() + 2);
             dialog.setResultConverter(buttonType -> buttonType);
             Optional<ButtonType> result = dialog.showAndWait();
