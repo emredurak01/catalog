@@ -15,7 +15,7 @@ public class Item extends TreeItem<String> {
     private String name;
     private Type type;
     private List<String> fieldValues;
-    private final Set<String> tags;
+    private Set<String> tags;
 
     public Item(String name, Type type, List<String> fieldValues) {
         id = UUID.randomUUID();
@@ -57,6 +57,10 @@ public class Item extends TreeItem<String> {
 
     public Set<String> getTags() {
         return tags;
+    }
+
+    public void setTags(Set<String> tags) {
+        this.tags = tags;
     }
 
     public void addTag(String tag) throws TagExistException {

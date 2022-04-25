@@ -11,9 +11,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class CatalogController {
     private final TypeContainer typeContainer = new TypeContainer();
@@ -178,7 +176,16 @@ public class CatalogController {
         content.add(name, 1, 0);
         content.add(new Label("field types"), 0, 1);
         content.add(fields, 1, 1);
-        dialog.setResultConverter(buttonType -> new Type(name.getText(), List.of(fields.getText().split(","))));
+        dialog.setResultConverter(buttonType -> {
+            if (fields.getText().isBlank()) {
+                alert.setHeaderText(Localisation.BLANK_FIELD);
+                alert.show();
+                return null;
+            }
+            List<String> fieldTypes = new ArrayList<>(List.of(fields.getText().split(",")));
+            fieldTypes.replaceAll(String::trim);
+            return new Type(name.getText(), fieldTypes);
+        });
         dialog.setDialogPane(pane);
         Optional<Type> result = dialog.showAndWait();
 
@@ -236,7 +243,12 @@ public class CatalogController {
                 List<String> fieldTypes = new ArrayList<>();
 
                 for (TextField f : textFields) {
-                    fieldTypes.add(f.getText());
+                    if (f.getText().isBlank()) {
+                        alert.setHeaderText(Localisation.BLANK_FIELD);
+                        alert.show();
+                        return;
+                    }
+                    fieldTypes.add(f.getText().trim());
                 }
                 type.setFieldTypes(fieldTypes);
             }
@@ -249,9 +261,12 @@ public class CatalogController {
             }
 
             for (int i = 0; i < textFields.size(); i++) {
-                content.add(new Label(item.getType().getFieldTypes().get(i)), 0, i + 2);
+                content.add(new Label("field value " + (i + 1)), 0, i + 2);
                 content.add(textFields.get(i), 1, i + 2);
             }
+            content.add(new Label("tags"), 0, textFields.size() + 2);
+            TextField tagsField = new TextField(item.getTags().toString());
+            content.add(tagsField, 1, textFields.size() + 2);
             dialog.showAndWait();
 
             if (name.getText().trim().isEmpty()) {
@@ -265,6 +280,9 @@ public class CatalogController {
                     fieldValues.add(f.getText());
                 }
                 item.setFieldValues(fieldValues);
+                Set<String> tags = new HashSet<>();
+                Collections.addAll(tags, tagsField.getText().replaceAll("\\[", "").replaceAll("]", "").split(","));
+                item.setTags(tags);
             }
         } else {
             alert.setHeaderText(Localisation.SELECTED_ROOT);
