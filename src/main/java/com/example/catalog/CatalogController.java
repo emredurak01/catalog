@@ -110,7 +110,7 @@ public class CatalogController {
         Alert alert = new Alert(Alert.AlertType.ERROR);
 
         if (treeItem instanceof Item) {
-            alert.setHeaderText(Localisation.SELECT + Localisation.ROOT + " or " + Localisation.TYPE);
+            alert.setHeaderText(Localisation.SELECT + " " + Localisation.ROOT + " or " + Localisation.TYPE);
             alert.show();
         } else if (treeItem instanceof Type type) {
             onAddItem(type, alert);
@@ -324,7 +324,7 @@ public class CatalogController {
             }
 
             for (int i = 0; i < textFields.size(); i++) {
-                content.add(new Label("Field value " + (i + 1)), 0, i + 2);
+                content.add(new Label(item.getType().getFieldTypes().get(i)), 0, i + 2);
                 content.add(textFields.get(i), 1, i + 2);
             }
             content.add(new Label("Tags"), 0, textFields.size() + 2);
