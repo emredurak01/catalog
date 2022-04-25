@@ -4,6 +4,6 @@ import com.example.catalog.exception.CatalogException;
 
 public class FieldExistException extends CatalogException {
     public FieldExistException() {
-        super("field exists");
+        super("Field already exist");
     }
 }

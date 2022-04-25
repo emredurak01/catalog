@@ -4,6 +4,6 @@ import com.example.catalog.exception.CatalogException;
 
 public class TagNotExistException extends CatalogException {
     public TagNotExistException() {
-        super("tag does not exist");
+        super("Tag does not exist");
     }
 }

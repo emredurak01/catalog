@@ -4,6 +4,6 @@ import com.example.catalog.exception.CatalogException;
 
 public class TagExistException extends CatalogException {
     public TagExistException() {
-        super("tag exists");
+        super("Tag already exist");
     }
 }

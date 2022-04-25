@@ -42,16 +42,15 @@ public class CatalogController {
         view.setRoot(root);
         view.getSelectionModel().select(root);
         List<String> bookFieldTypes = new ArrayList<>();
-        bookFieldTypes.add("title");
-        bookFieldTypes.add("authors");
-        bookFieldTypes.add("edition");
-        bookFieldTypes.add("purchase date");
-        bookFieldTypes.add("completed date");
+        bookFieldTypes.add("Title");
+        bookFieldTypes.add("Authors");
+        bookFieldTypes.add("Edition");
+        bookFieldTypes.add("Purchase date");
+        bookFieldTypes.add("Completion date");
 
         List<String> cdFieldTypes = new ArrayList<>();
-        cdFieldTypes.add("title");
-        cdFieldTypes.add("colour");
-        cdFieldTypes.add("speed");
+        cdFieldTypes.add("Title");
+        cdFieldTypes.add("Color");
 
         try {
             typeContainer.add(new Type("book", bookFieldTypes), view);
@@ -128,7 +127,7 @@ public class CatalogController {
         GridPane content = new GridPane();
         pane.setContent(content);
         TextField name = new TextField(type.getName());
-        content.add(new Label("name"), 0, 0);
+        content.add(new Label("Name"), 0, 0);
         content.add(name, 1, 0);
         List<TextField> textFields = new ArrayList<>();
 
@@ -172,9 +171,9 @@ public class CatalogController {
         pane.setContent(content);
         TextField name = new TextField();
         TextField fields = new TextField();
-        content.add(new Label("name"), 0, 0);
+        content.add(new Label("Name"), 0, 0);
         content.add(name, 1, 0);
-        content.add(new Label("field types"), 0, 1);
+        content.add(new Label("Field types"), 0, 1);
         content.add(fields, 1, 1);
         dialog.setResultConverter(buttonType -> {
             if (fields.getText().isBlank()) {
@@ -214,14 +213,14 @@ public class CatalogController {
         dialog.setDialogPane(pane);
         GridPane content = new GridPane();
         pane.setContent(content);
-        content.add(new Label("name"), 0, 0);
+        content.add(new Label("Name"), 0, 0);
         TextField name = new TextField();
         content.add(name, 1, 0);
         List<TextField> textFields = new ArrayList<>();
         Alert alert = new Alert(Alert.AlertType.ERROR);
 
         if (treeItem instanceof Type type) {
-            dialog.setTitle("edit type");
+            dialog.setTitle("Edit type");
 
             name.setText(type.getName());
 
@@ -230,7 +229,7 @@ public class CatalogController {
             }
 
             for (int i = 0; i < textFields.size(); i++) {
-                content.add(new Label("field type " + (i + 1)), 0, i + 2);
+                content.add(new Label("Field type " + (i + 1)), 0, i + 2);
                 content.add(textFields.get(i), 1, i + 2);
             }
             dialog.showAndWait();
@@ -253,7 +252,7 @@ public class CatalogController {
                 type.setFieldTypes(fieldTypes);
             }
         } else if (treeItem instanceof Item item) {
-            dialog.setTitle("edit item");
+            dialog.setTitle("Edit item");
             name.setText(item.getName());
 
             for (int i = 0; i < item.getFieldValues().size(); i++) {
@@ -261,10 +260,10 @@ public class CatalogController {
             }
 
             for (int i = 0; i < textFields.size(); i++) {
-                content.add(new Label("field value " + (i + 1)), 0, i + 2);
+                content.add(new Label("Field value " + (i + 1)), 0, i + 2);
                 content.add(textFields.get(i), 1, i + 2);
             }
-            content.add(new Label("tags"), 0, textFields.size() + 2);
+            content.add(new Label("Tags"), 0, textFields.size() + 2);
             TextField tagsField = new TextField(item.getTags().toString());
             content.add(tagsField, 1, textFields.size() + 2);
             dialog.showAndWait();

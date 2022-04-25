@@ -4,6 +4,6 @@ import com.example.catalog.exception.CatalogException;
 
 public class ItemNotExistException extends CatalogException {
     public ItemNotExistException() {
-        super("item does not exist");
+        super("Item does not exist");
     }
 }

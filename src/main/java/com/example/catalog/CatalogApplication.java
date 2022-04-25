@@ -13,7 +13,7 @@ public class CatalogApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         Parent parent = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("catalog-view.fxml")));
-        stage.setTitle("catalog");
+        stage.setTitle("Catalog");
         stage.setScene(new Scene(parent, 900, 600));
         stage.show();
     }
