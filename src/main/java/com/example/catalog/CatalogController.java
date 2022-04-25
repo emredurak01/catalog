@@ -95,8 +95,8 @@ public class CatalogController {
 
     private void onHelp() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(Localisation.HELP);
-        alert.setHeaderText("lorem ipsum dolor sit amet");
+        alert.setTitle(Localisation.HELP_TITLE);
+        alert.setHeaderText(Localisation.HELP_TEXT);
         alert.show();
     }
 
