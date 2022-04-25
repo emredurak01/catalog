@@ -1,27 +1,32 @@
 package com.example.catalog;
 
-import com.example.catalog.exception.item.ItemExistException;
 import com.example.catalog.exception.item.ItemNotExistException;
+import com.example.catalog.exception.tag.TagExistException;
+import com.example.catalog.exception.tag.TagNotExistException;
 import javafx.scene.control.TreeItem;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
-public class Item {
+public class Item extends TreeItem<String>{
+    private final UUID id;
     private String name;
     private Type type;
     private List<String> fieldValues;
     private final Set<String> tags;
 
-    private final TreeItem<String> node;
-
     public Item(String name, Type type, List<String> fieldValues) {
-        this.name = name;
+        id = UUID.randomUUID();
+        setName(name);
         this.type = type;
         this.fieldValues = fieldValues;
         tags = new HashSet<>();
-        node = new TreeItem<>(name);
+    }
+
+    public UUID getId() {
+        return id;
     }
 
     public String getName() {
@@ -30,7 +35,7 @@ public class Item {
 
     public void setName(String name) {
         this.name = name;
-        node.setValue(name);
+        setValue(name);
     }
 
     public void setType(Type type) {
@@ -41,15 +46,11 @@ public class Item {
         return type;
     }
 
-    public void editField(String name, String newName) throws ItemNotExistException, ItemExistException {
+    public void editField(String name, String newName) throws ItemNotExistException {
         int index = fieldValues.indexOf(name);
 
         if (index == -1) {
             throw new ItemNotExistException();
-        }
-
-        if (fieldValues.contains(newName)) {
-            throw new ItemExistException();
         }
         fieldValues.set(index, newName);
     }
@@ -58,17 +59,17 @@ public class Item {
         return tags;
     }
 
-    public void addTag(String tag) throws ItemExistException {
-        if (tags.contains(tags)) {
-            throw new ItemExistException();
+    public void addTag(String tag) throws TagExistException {
+        if (tags.contains(tag)) {
+            throw new TagExistException();
         }
 
         tags.add(tag);
     }
 
-    public void removeTag(String tag) throws ItemNotExistException {
+    public void removeTag(String tag) throws TagNotExistException {
         if (!tags.contains(tag)) {
-            throw new ItemNotExistException();
+            throw new TagNotExistException();
         }
         tags.remove(tag);
     }
@@ -79,9 +80,5 @@ public class Item {
 
     public void setFieldValues(List<String> fieldValues) {
         this.fieldValues = fieldValues;
-    }
-
-    public TreeItem<String> getNode() {
-        return node;
     }
 }

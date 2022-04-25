@@ -1,29 +1,20 @@
 package com.example.catalog;
 
-import com.example.catalog.exception.item.ItemExistException;
 import com.example.catalog.exception.item.ItemNotExistException;
 import com.example.catalog.exception.type.TypeExistException;
 import com.example.catalog.exception.type.TypeNotExistException;
 import javafx.application.Platform;
-import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
-import javafx.beans.value.ObservableStringValue;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 public class CatalogController {
-    /**
-     * containers are constructed once
-     */
     private final TypeContainer typeContainer = new TypeContainer();
     private final ItemContainer itemContainer = new ItemContainer();
     @FXML
@@ -44,22 +35,28 @@ public class CatalogController {
 
     @FXML
     private void initialize() {
-        view.setRoot(new TreeItem<>(Type.PREFIX)); // the root contains the type nodes, and the type nodes contain the item nodes
-        view.getRoot().setExpanded(true); // the children are showed by default
-        // read the types.txt and items.txt files
-        // default types
-        List<String> fieldTypes = new ArrayList<>();
-        fieldTypes.add("title");
-        fieldTypes.add("author");
-        fieldTypes.add("date");
+        TreeItem<String> root = new TreeItem<>();
+        root.setExpanded(true);
+        view.setRoot(root);
+        view.getSelectionModel().select(root);
+        List<String> bookFieldTypes = new ArrayList<>();
+        bookFieldTypes.add("title");
+        bookFieldTypes.add("authors");
+        bookFieldTypes.add("edition");
+        bookFieldTypes.add("purchase date");
+        bookFieldTypes.add("completed date");
+
+        List<String> cdFieldTypes = new ArrayList<>();
+        cdFieldTypes.add("title");
+        cdFieldTypes.add("colour");
+        cdFieldTypes.add("speed");
 
         try {
-            typeContainer.add(new Type(Type.PREFIX + "book", fieldTypes), view);
-            typeContainer.add(new Type(Type.PREFIX + "cd", fieldTypes), view);
+            typeContainer.add(new Type("book", bookFieldTypes), view);
+            typeContainer.add(new Type("cd", cdFieldTypes), view);
         } catch (TypeExistException e) {
             e.printStackTrace();
         }
-        // event bindings
         addButton.setOnAction((actionEvent -> onAdd()));
         editButton.setOnAction(actionEvent -> onEdit());
         deleteButton.setOnAction(actionEvent -> onDelete());
@@ -69,92 +66,71 @@ public class CatalogController {
     }
 
     public void onAdd() {
+        TreeItem<String> treeItem = view.getSelectionModel().getSelectedItem();
         Alert alert = new Alert(Alert.AlertType.ERROR);
-        TreeItem<String> selectedItem = view.getSelectionModel().getSelectedItem();
 
-        if (selectedItem == null) {
-            alert.setHeaderText("""
-                    1. select the root to add a type
-                    2. select a type to add an item
-                    """);
+        if (treeItem instanceof Item) {
+            alert.setHeaderText(Localisation.SELECT + Localisation.ROOT + " or " + Localisation.TYPE);
             alert.show();
-        } else if (selectedItem.getValue().equals(Type.PREFIX)) {
-            onAddType(alert);
-        } else if (selectedItem.getValue().startsWith(Type.PREFIX)) {
-            onAddItem(selectedItem, alert);
+        } else if (treeItem instanceof Type type) {
+            onAddItem(type, alert);
         } else {
-            alert.setHeaderText("nothing can be added to an item, however it can be edited");
-            alert.show();
+            onAddType(alert);
         }
     }
 
-    public void onAddItem(TreeItem<String> selectedItem, Alert alert) {
+    public void onAddItem(Type type, Alert alert) {
         Dialog<Item> dialog = new Dialog<>();
-        dialog.setTitle("add item");
+        dialog.setTitle(Localisation.ADD + " " + Localisation.ITEM);
+        DialogPane pane = new DialogPane();
+        pane.getButtonTypes().add(ButtonType.OK);
+        dialog.setDialogPane(pane);
+        GridPane content = new GridPane();
+        pane.setContent(content);
+        TextField name = new TextField(type.getName());
+        content.add(new Label("name"), 0, 0);
+        content.add(name, 1, 0);
+        List<TextField> textFields = new ArrayList<>();
+
+        for (int i = 0; i < type.getFieldTypes().size(); i++) {
+            textFields.add(new TextField(type.getFieldTypes().get(i)));
+        }
+
+        for (int i = 0; i < textFields.size(); i++) {
+            content.add(new Label(type.getFieldTypes().get(i)), 0, i + 2);
+            content.add(textFields.get(i), 1, i + 2);
+        }
+        dialog.setResultConverter(buttonType -> {
+            List<String> fieldValues = new ArrayList<>();
+
+            for (TextField f : textFields) {
+                fieldValues.add(f.getText());
+            }
+            return new Item(name.getText(), type, fieldValues);
+        });
+        Optional<Item> result = dialog.showAndWait();
+
+        if (result.isPresent()) {
+            Item item = result.get();
+
+            if (item.getName().trim().isEmpty()) {
+                alert.setHeaderText(Localisation.EMPTY_NAME);
+                alert.show();
+            } else {
+                itemContainer.add(item);
+            }
+        }
+    }
+
+    private void onAddType(Alert alert) {
+        Dialog<Type> dialog = new Dialog<>();
+        dialog.setTitle(Localisation.ADD + " " + Localisation.TYPE);
         DialogPane pane = new DialogPane();
         pane.getButtonTypes().add(ButtonType.OK);
         dialog.setDialogPane(pane);
         GridPane content = new GridPane();
         pane.setContent(content);
         TextField name = new TextField();
-        content.add(new Label("name"), 0, 0);
-        content.add(name, 1, 0);
-        List<TextField> textFields = new ArrayList<>();
-
-        try {
-            Type type = typeContainer.get(selectedItem.getValue());
-
-            for (int i = 0; i < type.getFieldTypes().size(); i++) {
-                textFields.add(new TextField(type.getFieldTypes().get(i)));
-            }
-
-            for (int i = 0; i < textFields.size(); i++) {
-                content.add(new Label(type.getFieldTypes().get(i)), 0, i + 2);
-                content.add(textFields.get(i), 1, i + 2);
-            }
-            dialog.setResultConverter(buttonType -> {
-                try {
-                    List<String> fieldValues = new ArrayList<>();
-
-                    for (TextField f : textFields) {
-                        fieldValues.add(f.getText());
-                    }
-                    return new Item(name.getText(), typeContainer.get(selectedItem.getValue()), fieldValues);
-                } catch (TypeNotExistException e) {
-                    alert.setHeaderText(e.getMessage());
-                    alert.show();
-                    return null;
-                }
-            });
-            Optional<Item> result = dialog.showAndWait();
-
-            if (result.isPresent()) {
-                try {
-                    Item item = result.get();
-                    itemContainer.add(item);
-                } catch (ItemExistException e) {
-                    alert.setHeaderText(e.getMessage());
-                    alert.show();
-                }
-            }
-        } catch (TypeNotExistException e) {
-            alert.setHeaderText(e.getMessage());
-            alert.show();
-        }
-    }
-
-    /**
-     * is called when add type button is clicked
-     */
-    private void onAddType(Alert alert) {
-        Dialog<Type> dialog = new Dialog<>();
-        dialog.setTitle("add type");
-        DialogPane pane = new DialogPane();
-        pane.getButtonTypes().add(ButtonType.OK);
-        dialog.setDialogPane(pane);
-        GridPane content = new GridPane();
-        pane.setContent(content);
-        TextField name = new TextField(Type.PREFIX);
         TextField fields = new TextField();
         content.add(new Label("name"), 0, 0);
         content.add(name, 1, 0);
@@ -168,14 +144,11 @@ public class CatalogController {
             try {
                 Type type = result.get();
 
-                if (type.getName().equals(Type.PREFIX)) {
-                    alert.setHeaderText("the type can not have the root's name");
+                if (type.getName().trim().isEmpty()) {
+                    alert.setHeaderText(Localisation.EMPTY_NAME);
                     alert.show();
-                } else if (type.getName().startsWith(Type.PREFIX)) {
-                    typeContainer.add(type, view);
                 } else {
-                    alert.setHeaderText("the type name should start with \"" + Type.PREFIX + "\"");
-                    alert.show();
+                    typeContainer.add(type, view);
                 }
             } catch (TypeExistException e) {
                 alert.setHeaderText(e.getMessage());
@@ -185,14 +158,7 @@ public class CatalogController {
     }
 
     private void onEdit() {
-        String value = view.getSelectionModel().getSelectedItem().getValue();
-
-        if (value.equals("/")) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setHeaderText("the root can not be edited");
-            alert.show();
-            return;
-        }
+        TreeItem<String> treeItem = view.getSelectionModel().getSelectedItem();
         Dialog<Void> dialog = new Dialog<>();
         DialogPane pane = new DialogPane();
         pane.getButtonTypes().addAll(ButtonType.OK);
@@ -205,58 +171,51 @@ public class CatalogController {
         List<TextField> textFields = new ArrayList<>();
         Alert alert = new Alert(Alert.AlertType.ERROR);
 
-        if (value.startsWith(Type.PREFIX)) { // a type is selected
+        if (treeItem instanceof Type type) {
             dialog.setTitle("edit type");
 
-            try {
-                Type type = typeContainer.get(value);
-                name.setText(type.getName());
+            name.setText(type.getName());
 
-                for (int i = 0; i < type.getFieldTypes().size(); i++) {
-                    textFields.add(new TextField(type.getFieldTypes().get(i)));
-                }
-
-                for (int i = 0; i < textFields.size(); i++) {
-                    content.add(new Label("field type " + (i + 1)), 0, i + 2);
-                    content.add(textFields.get(i), 1, i + 2);
-                }
-                dialog.showAndWait();
-
-                if (name.getText().equals(Type.PREFIX)) {
-                    alert.setHeaderText("the type can not have the root's name");
-                    alert.show();
-                } else if (name.getText().startsWith("/")) {
-                    type.setName(name.getText());
-                    List<String> fieldTypes = new ArrayList<>();
-
-                    for (TextField f : textFields) {
-                        fieldTypes.add(f.getText());
-                    }
-                    type.setFieldTypes(fieldTypes);
-                } else {
-                    alert.setHeaderText("the type name should start with \"" + Type.PREFIX + "\"");
-                    alert.show();
-                }
-            } catch (TypeNotExistException e) {
-                alert.setHeaderText(e.getMessage());
-                alert.show();
+            for (int i = 0; i < type.getFieldTypes().size(); i++) {
+                textFields.add(new TextField(type.getFieldTypes().get(i)));
             }
-        } else { // an item is selected
+
+            for (int i = 0; i < textFields.size(); i++) {
+                content.add(new Label("field type " + (i + 1)), 0, i + 2);
+                content.add(textFields.get(i), 1, i + 2);
+            }
+            dialog.showAndWait();
+
+            if (name.getText().trim().isEmpty()) {
+                alert.setHeaderText(Localisation.EMPTY_NAME);
+                alert.show();
+            } else {
+                type.setName(name.getText());
+                List<String> fieldTypes = new ArrayList<>();
+
+                for (TextField f : textFields) {
+                    fieldTypes.add(f.getText());
+                }
+                type.setFieldTypes(fieldTypes);
+            }
+        } else if (treeItem instanceof Item item) {
             dialog.setTitle("edit item");
+            name.setText(item.getName());
 
-            try {
-                Item item = itemContainer.get(value);
-                name.setText(item.getName());
+            for (int i = 0; i < item.getFieldValues().size(); i++) {
+                textFields.add(new TextField(item.getFieldValues().get(i)));
+            }
 
-                for (int i = 0; i < item.getFieldValues().size(); i++) {
-                    textFields.add(new TextField(item.getFieldValues().get(i)));
-                }
+            for (int i = 0; i < textFields.size(); i++) {
+                content.add(new Label(item.getType().getFieldTypes().get(i)), 0, i + 2);
+                content.add(textFields.get(i), 1, i + 2);
+            }
+            dialog.showAndWait();
 
-                for (int i = 0; i < textFields.size(); i++) {
-                    content.add(new Label(item.getType().getFieldTypes().get(i)), 0, i + 2);
-                    content.add(textFields.get(i), 1, i + 2);
-                }
-                dialog.showAndWait();
+            if (name.getText().trim().isEmpty()) {
+                alert.setHeaderText(Localisation.EMPTY_NAME);
+                alert.show();
+            } else {
                 item.setName(name.getText());
                 List<String> fieldValues = new ArrayList<>();
 
@@ -264,96 +223,71 @@ public class CatalogController {
                     fieldValues.add(f.getText());
                 }
                 item.setFieldValues(fieldValues);
-            } catch (ItemNotExistException e) {
-                alert.setHeaderText(e.getMessage());
-                alert.show();
             }
+        } else {
+            alert.setHeaderText(Localisation.SELECTED_ROOT);
+            alert.show();
         }
     }
 
     private void onDelete() {
-        String value = view.getSelectionModel().getSelectedItem().getValue();
+        TreeItem<String> treeItem = view.getSelectionModel().getSelectedItem();
         Alert alert = new Alert(Alert.AlertType.ERROR);
 
-        if (value.equals(Type.PREFIX)) {
-            alert.setHeaderText("the root can not be deleted");
-            alert.show();
-            return;
-        }
-
-        if (value.startsWith("/")) { // a type is selected
+        if (treeItem instanceof Type type) {
             try {
-                typeContainer.remove(typeContainer.get(value), view, itemContainer);
+                typeContainer.remove(type, view, itemContainer);
             } catch (TypeNotExistException e) {
                 alert.setHeaderText(e.getMessage());
                 alert.show();
             }
-        } else { // an item is selected
+        } else if (treeItem instanceof Item item) {
             try {
-                Item item = itemContainer.get(value);
                 itemContainer.remove(item);
             } catch (ItemNotExistException e) {
                 alert.setHeaderText(e.getMessage());
                 alert.show();
             }
+        } else {
+            alert.setHeaderText(Localisation.SELECTED_ROOT);
+            alert.show();
         }
     }
 
     private void onHelp() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("help");
+        alert.setTitle(Localisation.HELP);
         alert.setHeaderText("lorem ipsum dolor sit amet");
         alert.show();
     }
 
-    /**
-     * is called when exit button is clicked
-     */
     private void onExit() {
         Platform.exit();
     }
 
     private void onSelect() {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-
-        TreeItem<String> selectedItem = view.getSelectionModel().getSelectedItem();
-        if (selectedItem == null || selectedItem.getValue().equals(Type.PREFIX)) {
-            return;
-        }
         table.getColumns().clear();
         table.getItems().clear();
 
-        if (selectedItem.getValue().startsWith(Type.PREFIX)) { // a type is selected
-            try {
-                Type type = typeContainer.get(selectedItem.getValue());
+        TreeItem<String> treeItem = view.getSelectionModel().getSelectedItem();
 
-                for (String s : type.getFieldTypes()) {
-                    table.getColumns().add(new TableColumn<>(s));
-                }
-            } catch (TypeNotExistException e) {
-                alert.setHeaderText(e.getMessage());
-                alert.show();
+        if (treeItem instanceof Type type) {
+            for (String s : type.getFieldTypes()) {
+                table.getColumns().add(new TableColumn<>(s));
             }
-        } else {  // an item is selected
-            try {
-                Item item = itemContainer.get(selectedItem.getValue());
-
-                for (int i = 0; i < item.getType().getFieldTypes().size(); i++) {
-                    TableColumn<List<String>, String> column = new TableColumn<>(item.getType().getFieldTypes().get(i));
-                    int finalI = i;
-                    column.setCellValueFactory(e -> new SimpleStringProperty(e.getValue().get(finalI)));
-                    table.getColumns().add(column);
-                }
-                List<String> fieldValues = FXCollections.observableArrayList();
-
-                for (int i = 0; i < item.getFieldValues().size(); i++) {
-                    fieldValues.add(i, item.getFieldValues().get(i));
-                }
-                table.getItems().add(fieldValues);
-            } catch (ItemNotExistException e) {
-                alert.setHeaderText(e.getMessage());
-                alert.show();
+        } else if (treeItem instanceof Item item) {
+            for (int i = 0; i < item.getType().getFieldTypes().size(); i++) {
+                TableColumn<List<String>, String> column = new TableColumn<>(item.getType().getFieldTypes().get(i));
+                int finalI = i;
+                column.setCellValueFactory(e -> new SimpleStringProperty(e.getValue().get(finalI)));
+                table.getColumns().add(column);
             }
+            List<String> fieldValues = FXCollections.observableArrayList();
+
+            for (int i = 0; i < item.getFieldValues().size(); i++) {
+                fieldValues.add(i, item.getFieldValues().get(i));
+            }
+            table.getItems().add(fieldValues);
         }
     }
 }

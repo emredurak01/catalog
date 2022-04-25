@@ -3,7 +3,6 @@ package com.example.catalog;
 
 import com.example.catalog.exception.type.TypeExistException;
 import com.example.catalog.exception.type.TypeNotExistException;
-import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 
 import java.util.ArrayList;
@@ -11,70 +10,41 @@ import java.util.List;
 
 public class TypeContainer {
 
-    /**
-     * list to store types
-     */
     private final List<Type> types;
 
-    /**
-     * types is initially empty
-     */
     public TypeContainer() {
         types = new ArrayList<>();
     }
-
-    /**
-     * @return all types
-     */
 
     public List<Type> getAll() {
         return types;
     }
 
-
-    /**
-     * @param type non-existing type to be added to types
-     * @param view the tree view
-     * @throws TypeExistException if type exists
-     */
     public void add(Type type, TreeView<String> view) throws TypeExistException {
         try {
             get(type.getName());
             throw new TypeExistException();
         } catch (TypeNotExistException e) {
             types.add(type);
-            view.getRoot().getChildren().add(type.getNode());
+            view.getRoot().getChildren().add(type);
         }
     }
 
-
-    /**
-     * @param type existing type to be removed from types
-     * @param view the tree view
-     * @param itemContainer the container containing the items
-     * @throws TypeNotExistException if type does not exist
-     */
     public void remove(Type type, TreeView<String> view, ItemContainer itemContainer) throws TypeNotExistException {
         if (!types.contains(type)) {
             throw new TypeNotExistException();
         }
         types.remove(type);
-        view.getRoot().getChildren().remove(type.getNode());
+        view.getRoot().getChildren().remove(type);
         itemContainer.getAll().removeIf(t -> t.getType().getName().equals(type.getName()));
     }
 
-    /**
-     * @param name existing type name to search in types
-     * @return type by name
-     * @throws TypeNotExistException if type does not exist
-     */
-    public Type get(String name) throws TypeNotExistException {
+    public void get(String name) throws TypeNotExistException {
         for (Type type : types) {
             if (type.getName().equals(name)) {
-                return type;
+                return;
             }
         }
         throw new TypeNotExistException();
-
     }
 }

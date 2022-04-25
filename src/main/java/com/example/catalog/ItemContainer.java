@@ -1,6 +1,5 @@
 package com.example.catalog;
 
-import com.example.catalog.exception.item.ItemExistException;
 import com.example.catalog.exception.item.ItemNotExistException;
 
 import java.util.ArrayList;
@@ -18,23 +17,9 @@ public class ItemContainer {
         return items;
     }
 
-    public Item get(String name) throws ItemNotExistException {
-        for (Item item : items) {
-            if (item.getName().equals(name)) {
-                return item;
-            }
-        }
-        throw new ItemNotExistException();
-    }
-
-    public void add(Item item) throws ItemExistException {
-        try {
-            get(item.getName());
-            throw new ItemExistException();
-        } catch (ItemNotExistException e) {
-            items.add(item);
-            item.getType().getNode().getChildren().add(item.getNode());
-        }
+    public void add(Item item) {
+        items.add(item);
+        item.getType().getChildren().add(item);
     }
 
     public void remove(Item item) throws ItemNotExistException {
@@ -42,7 +27,7 @@ public class ItemContainer {
             throw new ItemNotExistException();
         }
         items.remove(item);
-        item.getType().getNode().getChildren().remove(item.getNode());
+        item.getType().getChildren().remove(item);
     }
 
     public List<Item> getByTags(Set<String> tags) {
