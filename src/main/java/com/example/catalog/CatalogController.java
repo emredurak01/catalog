@@ -132,7 +132,7 @@ public class CatalogController {
         List<TextField> textFields = new ArrayList<>();
 
         for (int i = 0; i < type.getFieldTypes().size(); i++) {
-            textFields.add(new TextField(type.getFieldTypes().get(i)));
+            textFields.add(new TextField());
         }
 
         for (int i = 0; i < textFields.size(); i++) {
