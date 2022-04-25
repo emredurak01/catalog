@@ -4,6 +4,6 @@ import com.example.catalog.exception.CatalogException;
 
 public class TypeExistException extends CatalogException {
     public TypeExistException() {
-        super("Type already exist");
+        super("Type already exists");
     }
 }

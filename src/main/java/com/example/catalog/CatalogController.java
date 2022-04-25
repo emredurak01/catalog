@@ -50,7 +50,7 @@ public class CatalogController {
 
         List<String> cdFieldTypes = new ArrayList<>();
         cdFieldTypes.add("Title");
-        cdFieldTypes.add("Color");
+        cdFieldTypes.add("Colour");
 
         try {
             typeContainer.add(new Type("book", bookFieldTypes), view);
@@ -122,8 +122,9 @@ public class CatalogController {
         Dialog<Item> dialog = new Dialog<>();
         dialog.setTitle(Localisation.ADD + " " + Localisation.ITEM);
         DialogPane pane = new DialogPane();
-        pane.getButtonTypes().add(ButtonType.OK);
+        pane.getButtonTypes().addAll(ButtonType.OK);
         dialog.setDialogPane(pane);
+        dialog.getDialogPane().getScene().getWindow().setOnCloseRequest(windowEvent -> dialog.close());
         GridPane content = new GridPane();
         pane.setContent(content);
         TextField name = new TextField(type.getName());
@@ -140,6 +141,9 @@ public class CatalogController {
             content.add(textFields.get(i), 1, i + 2);
         }
         dialog.setResultConverter(buttonType -> {
+            if (buttonType == null) {
+                return null;
+            }
             List<String> fieldValues = new ArrayList<>();
 
             for (TextField f : textFields) {
@@ -176,6 +180,10 @@ public class CatalogController {
         content.add(new Label("Field types"), 0, 1);
         content.add(fields, 1, 1);
         dialog.setResultConverter(buttonType -> {
+            if (buttonType == null) {
+                return null;
+            }
+
             if (fields.getText().isBlank()) {
                 alert.setHeaderText(Localisation.BLANK_FIELD);
                 alert.show();
@@ -207,7 +215,7 @@ public class CatalogController {
 
     private void onEdit() {
         TreeItem<String> treeItem = view.getSelectionModel().getSelectedItem();
-        Dialog<Void> dialog = new Dialog<>();
+        Dialog<ButtonType> dialog = new Dialog<>();
         DialogPane pane = new DialogPane();
         pane.getButtonTypes().addAll(ButtonType.OK);
         dialog.setDialogPane(pane);
@@ -232,24 +240,27 @@ public class CatalogController {
                 content.add(new Label("Field type " + (i + 1)), 0, i + 2);
                 content.add(textFields.get(i), 1, i + 2);
             }
-            dialog.showAndWait();
+            dialog.setResultConverter(buttonType -> buttonType);
+            Optional<ButtonType> result = dialog.showAndWait();
 
-            if (name.getText().trim().isEmpty()) {
-                alert.setHeaderText(Localisation.EMPTY_NAME);
-                alert.show();
-            } else {
-                type.setName(name.getText());
-                List<String> fieldTypes = new ArrayList<>();
+            if (result.isPresent() && result.get().equals(ButtonType.OK)) {
+                if (name.getText().trim().isEmpty()) {
+                    alert.setHeaderText(Localisation.EMPTY_NAME);
+                    alert.show();
+                } else {
+                    type.setName(name.getText());
+                    List<String> fieldTypes = new ArrayList<>();
 
-                for (TextField f : textFields) {
-                    if (f.getText().isBlank()) {
-                        alert.setHeaderText(Localisation.BLANK_FIELD);
-                        alert.show();
-                        return;
+                    for (TextField f : textFields) {
+                        if (f.getText().isBlank()) {
+                            alert.setHeaderText(Localisation.BLANK_FIELD);
+                            alert.show();
+                            return;
+                        }
+                        fieldTypes.add(f.getText().trim());
                     }
-                    fieldTypes.add(f.getText().trim());
+                    type.setFieldTypes(fieldTypes);
                 }
-                type.setFieldTypes(fieldTypes);
             }
         } else if (treeItem instanceof Item item) {
             dialog.setTitle("Edit item");
@@ -266,22 +277,24 @@ public class CatalogController {
             content.add(new Label("Tags"), 0, textFields.size() + 2);
             TextField tagsField = new TextField(item.getTags().toString());
             content.add(tagsField, 1, textFields.size() + 2);
-            dialog.showAndWait();
+            dialog.setResultConverter(buttonType -> buttonType);
+            Optional<ButtonType> result = dialog.showAndWait();
+            if (result.isPresent() && result.get().equals(ButtonType.OK)) {
+                if (name.getText().trim().isEmpty()) {
+                    alert.setHeaderText(Localisation.EMPTY_NAME);
+                    alert.show();
+                } else {
+                    item.setName(name.getText());
+                    List<String> fieldValues = new ArrayList<>();
 
-            if (name.getText().trim().isEmpty()) {
-                alert.setHeaderText(Localisation.EMPTY_NAME);
-                alert.show();
-            } else {
-                item.setName(name.getText());
-                List<String> fieldValues = new ArrayList<>();
-
-                for (TextField f : textFields) {
-                    fieldValues.add(f.getText());
+                    for (TextField f : textFields) {
+                        fieldValues.add(f.getText());
+                    }
+                    item.setFieldValues(fieldValues);
+                    Set<String> tags = new HashSet<>();
+                    Collections.addAll(tags, tagsField.getText().trim().replaceAll("\\[", "").replaceAll("]", "").split(","));
+                    item.setTags(tags);
                 }
-                item.setFieldValues(fieldValues);
-                Set<String> tags = new HashSet<>();
-                Collections.addAll(tags, tagsField.getText().trim().replaceAll("\\[", "").replaceAll("]", "").split(","));
-                item.setTags(tags);
             }
         } else {
             alert.setHeaderText(Localisation.SELECTED_ROOT);
@@ -314,23 +327,29 @@ public class CatalogController {
     }
 
     private void onAddTag() {
-        TreeItem<String> treeItem = view.getSelectionModel().getSelectedItem();
         Alert alert = new Alert(Alert.AlertType.ERROR);
 
-        if (treeItem instanceof Item item) {
-            try {
-                item.addTag(tagField.getText());
-            } catch (TagExistException e) {
-                alert.setHeaderText(e.getMessage());
-                alert.show();
-            }
-        } else if (treeItem instanceof Type) {
-            alert.setHeaderText(Localisation.SELECTED_TYPE);
+        if (tagField.getText().isBlank()) {
+            alert.setHeaderText(Localisation.BLANK_TAG);
             alert.show();
         } else {
-            alert.setHeaderText(Localisation.SELECTED_ROOT);
-            alert.show();
+            TreeItem<String> treeItem = view.getSelectionModel().getSelectedItem();
+
+            if (treeItem instanceof Item item) {
+                try {
+                    item.addTag(tagField.getText());
+                } catch (TagExistException e) {
+                    alert.setHeaderText(e.getMessage());
+                    alert.show();
+                }
+            } else if (treeItem instanceof Type) {
+                alert.setHeaderText(Localisation.SELECTED_TYPE);
+                alert.show();
+            } else {
+                alert.setHeaderText(Localisation.SELECTED_ROOT);
+                alert.show();
+            }
+            tagField.clear();
         }
-        tagField.clear();
     }
 }
