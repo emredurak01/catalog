@@ -106,8 +106,8 @@
                     <Font size="15.0"/>
                 </font>
             </Button>
-            <Button fx:id="deleteButton" mnemonicParsing="false" prefHeight="48.0" prefWidth="138.0"
-                    style="-fx-background-color: #9B59B6;" text="Delete" textFill="WHITE">
+            <Button fx:id="removeButton" mnemonicParsing="false" prefHeight="48.0" prefWidth="138.0"
+                    style="-fx-background-color: #9B59B6;" text="Remove" textFill="WHITE">
                 <cursor>
                     <Cursor fx:constant="HAND"/>
                 </cursor>

@@ -27,7 +27,7 @@ public class CatalogController {
     @FXML
     private Button editButton;
     @FXML
-    private Button deleteButton;
+    private Button removeButton;
     @FXML
     private Button addTagButton;
     @FXML
@@ -64,7 +64,7 @@ public class CatalogController {
         view.setOnMouseClicked(mouseEvent -> onSelect());
         addButton.setOnAction((actionEvent -> onAdd()));
         editButton.setOnAction(actionEvent -> onEdit());
-        deleteButton.setOnAction(actionEvent -> onRemove());
+        removeButton.setOnAction(actionEvent -> onRemove());
         addTagButton.setOnAction(actionEvent -> onAddTag());
     }
 
@@ -281,7 +281,7 @@ public class CatalogController {
                 }
                 item.setFieldValues(fieldValues);
                 Set<String> tags = new HashSet<>();
-                Collections.addAll(tags, tagsField.getText().replaceAll("\\[", "").replaceAll("]", "").split(","));
+                Collections.addAll(tags, tagsField.getText().trim().replaceAll("\\[", "").replaceAll("]", "").split(","));
                 item.setTags(tags);
             }
         } else {
