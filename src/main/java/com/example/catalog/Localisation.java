@@ -10,4 +10,5 @@ public class Localisation {
     public static final String ITEM = "item";
     public static final String EMPTY_NAME = "name is empty";
     public static final String SELECTED_ROOT = "root is selected";
+    public static final String SELECTED_TYPE = "type is selected";
 }

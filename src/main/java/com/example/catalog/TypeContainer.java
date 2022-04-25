@@ -16,10 +16,6 @@ public class TypeContainer {
         types = new ArrayList<>();
     }
 
-    public List<Type> getAll() {
-        return types;
-    }
-
     public void add(Type type, TreeView<String> view) throws TypeExistException {
         try {
             get(type.getName());

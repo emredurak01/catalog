@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-public class Item extends TreeItem<String>{
+public class Item extends TreeItem<String> {
     private final UUID id;
     private String name;
     private Type type;

@@ -1,6 +1,7 @@
 package com.example.catalog;
 
 import com.example.catalog.exception.item.ItemNotExistException;
+import com.example.catalog.exception.tag.TagExistException;
 import com.example.catalog.exception.type.TypeExistException;
 import com.example.catalog.exception.type.TypeNotExistException;
 import javafx.application.Platform;
@@ -18,6 +19,10 @@ public class CatalogController {
     private final TypeContainer typeContainer = new TypeContainer();
     private final ItemContainer itemContainer = new ItemContainer();
     @FXML
+    private Button helpButton;
+    @FXML
+    private Button exitButton;
+    @FXML
     private TreeView<String> view;
     @FXML
     private Button addButton;
@@ -26,12 +31,11 @@ public class CatalogController {
     @FXML
     private Button deleteButton;
     @FXML
-    private Button helpButton;
+    private Button addTagButton;
     @FXML
-    private Button exitButton;
-
+    private TextField tagField;
     @FXML
-    TableView<List<String>> table;
+    private TableView<List<String>> table;
 
     @FXML
     private void initialize() {
@@ -57,12 +61,50 @@ public class CatalogController {
         } catch (TypeExistException e) {
             e.printStackTrace();
         }
-        addButton.setOnAction((actionEvent -> onAdd()));
-        editButton.setOnAction(actionEvent -> onEdit());
-        deleteButton.setOnAction(actionEvent -> onDelete());
         helpButton.setOnAction((actionEvent -> onHelp()));
         exitButton.setOnAction(actionEvent -> onExit());
         view.setOnMouseClicked(mouseEvent -> onSelect());
+        addButton.setOnAction((actionEvent -> onAdd()));
+        editButton.setOnAction(actionEvent -> onEdit());
+        deleteButton.setOnAction(actionEvent -> onRemove());
+        addTagButton.setOnAction(actionEvent -> onAddTag());
+    }
+
+    private void onSelect() {
+        table.getColumns().clear();
+        table.getItems().clear();
+
+        TreeItem<String> treeItem = view.getSelectionModel().getSelectedItem();
+
+        if (treeItem instanceof Type type) {
+            for (String s : type.getFieldTypes()) {
+                table.getColumns().add(new TableColumn<>(s));
+            }
+        } else if (treeItem instanceof Item item) {
+            for (int i = 0; i < item.getType().getFieldTypes().size(); i++) {
+                TableColumn<List<String>, String> column = new TableColumn<>(item.getType().getFieldTypes().get(i));
+                int finalI = i;
+                column.setCellValueFactory(e -> new SimpleStringProperty(e.getValue().get(finalI)));
+                table.getColumns().add(column);
+            }
+            TableColumn<List<String>, String> column = new TableColumn<>("tags");
+            column.setCellValueFactory(e -> new SimpleStringProperty(item.getTags().toString()));
+            table.getColumns().add(column);
+            List<String> fieldValues = FXCollections.observableArrayList();
+            fieldValues.addAll(item.getFieldValues());
+            table.getItems().add(fieldValues);
+        }
+    }
+
+    private void onHelp() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(Localisation.HELP);
+        alert.setHeaderText("lorem ipsum dolor sit amet");
+        alert.show();
+    }
+
+    private void onExit() {
+        Platform.exit();
     }
 
     public void onAdd() {
@@ -230,7 +272,7 @@ public class CatalogController {
         }
     }
 
-    private void onDelete() {
+    private void onRemove() {
         TreeItem<String> treeItem = view.getSelectionModel().getSelectedItem();
         Alert alert = new Alert(Alert.AlertType.ERROR);
 
@@ -254,40 +296,24 @@ public class CatalogController {
         }
     }
 
-    private void onHelp() {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(Localisation.HELP);
-        alert.setHeaderText("lorem ipsum dolor sit amet");
-        alert.show();
-    }
-
-    private void onExit() {
-        Platform.exit();
-    }
-
-    private void onSelect() {
-        table.getColumns().clear();
-        table.getItems().clear();
-
+    private void onAddTag() {
         TreeItem<String> treeItem = view.getSelectionModel().getSelectedItem();
+        Alert alert = new Alert(Alert.AlertType.ERROR);
 
-        if (treeItem instanceof Type type) {
-            for (String s : type.getFieldTypes()) {
-                table.getColumns().add(new TableColumn<>(s));
+        if (treeItem instanceof Item item) {
+            try {
+                item.addTag(tagField.getText());
+            } catch (TagExistException e) {
+                alert.setHeaderText(e.getMessage());
+                alert.show();
             }
-        } else if (treeItem instanceof Item item) {
-            for (int i = 0; i < item.getType().getFieldTypes().size(); i++) {
-                TableColumn<List<String>, String> column = new TableColumn<>(item.getType().getFieldTypes().get(i));
-                int finalI = i;
-                column.setCellValueFactory(e -> new SimpleStringProperty(e.getValue().get(finalI)));
-                table.getColumns().add(column);
-            }
-            List<String> fieldValues = FXCollections.observableArrayList();
-
-            for (int i = 0; i < item.getFieldValues().size(); i++) {
-                fieldValues.add(i, item.getFieldValues().get(i));
-            }
-            table.getItems().add(fieldValues);
+        } else if (treeItem instanceof Type) {
+            alert.setHeaderText(Localisation.SELECTED_TYPE);
+            alert.show();
+        } else {
+            alert.setHeaderText(Localisation.SELECTED_ROOT);
+            alert.show();
         }
+        tagField.clear();
     }
 }
