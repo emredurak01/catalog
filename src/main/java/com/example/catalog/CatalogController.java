@@ -237,8 +237,17 @@ public class CatalogController {
             }
 
             for (int i = 0; i < textFields.size(); i++) {
-                content.add(new Label("Field type " + (i + 1)), 0, i + 2);
-                content.add(textFields.get(i), 1, i + 2);
+                Label label = new Label("Field type " + (i + 1));
+                content.add(label, 0, i + 2);
+                TextField textField = textFields.get(i);
+                content.add(textField, 1, i + 2);
+                Button button = new Button(Localisation.REMOVE_BUTTON);
+                button.setOnAction(actionEvent -> {
+                    content.getChildren().remove(label);
+                    content.getChildren().remove(textField);
+                    textFields.remove(textField);
+                });
+                content.add(button, 2, i + 2);
             }
             dialog.setResultConverter(buttonType -> buttonType);
             Optional<ButtonType> result = dialog.showAndWait();
@@ -331,6 +340,9 @@ public class CatalogController {
 
         if (tagField.getText().isBlank()) {
             alert.setHeaderText(Localisation.BLANK_TAG);
+            alert.show();
+        } else if (tagField.getText().contains(",")) {
+            alert.setHeaderText(Localisation.USED_COMMA);
             alert.show();
         } else {
             TreeItem<String> treeItem = view.getSelectionModel().getSelectedItem();

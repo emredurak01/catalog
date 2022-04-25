@@ -14,7 +14,9 @@ public class Localisation {
     public static final String ITEM = "Item";
     public static final String EMPTY_NAME = "Name is empty";
     public static final String BLANK_FIELD = "Field is blank";
+    public static final String REMOVE_BUTTON = "x";
     public static final String SELECTED_ROOT = "Root is selected";
     public static final String SELECTED_TYPE = "Type is selected";
     public static final String BLANK_TAG = "Tag is blank";
+    public static final String USED_COMMA = "Comma is not allowed";
 }
