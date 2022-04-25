@@ -175,6 +175,7 @@ public class CatalogController {
         pane.setContent(content);
         TextField name = new TextField();
         TextField fields = new TextField();
+        fields.setPromptText("field1, field2, ...");
         content.add(new Label("Name"), 0, 0);
         content.add(name, 1, 0);
         content.add(new Label("Field types"), 0, 1);
@@ -246,6 +247,7 @@ public class CatalogController {
                     content.getChildren().remove(label);
                     content.getChildren().remove(textField);
                     textFields.remove(textField);
+                    itemContainer.getAll().removeIf(e -> e.getType().equals(type));
                 });
                 content.add(button, 2, i + 2);
             }
@@ -269,6 +271,7 @@ public class CatalogController {
                         fieldTypes.add(f.getText().trim());
                     }
                     type.setFieldTypes(fieldTypes);
+                    onSelect();
                 }
             }
         } else if (treeItem instanceof Item item) {
@@ -284,10 +287,13 @@ public class CatalogController {
                 content.add(textFields.get(i), 1, i + 2);
             }
             content.add(new Label("Tags"), 0, textFields.size() + 2);
-            TextField tagsField = new TextField(item.getTags().toString());
+            String itemTags = item.getTags().toString();
+            TextField tagsField = new TextField(itemTags.substring(1, itemTags.length() - 1));
+            tagsField.setTooltip(new Tooltip("test"));
             content.add(tagsField, 1, textFields.size() + 2);
             dialog.setResultConverter(buttonType -> buttonType);
             Optional<ButtonType> result = dialog.showAndWait();
+
             if (result.isPresent() && result.get().equals(ButtonType.OK)) {
                 if (name.getText().trim().isEmpty()) {
                     alert.setHeaderText(Localisation.EMPTY_NAME);
@@ -301,8 +307,14 @@ public class CatalogController {
                     }
                     item.setFieldValues(fieldValues);
                     Set<String> tags = new HashSet<>();
-                    Collections.addAll(tags, tagsField.getText().trim().replaceAll("\\[", "").replaceAll("]", "").split(","));
+                    String[] trimmedTags = tagsField.getText().trim().split(",");
+
+                    for (int i = 0; i < trimmedTags.length; i++) {
+                        trimmedTags[i] = trimmedTags[i].trim();
+                    }
+                    Collections.addAll(tags, trimmedTags);
                     item.setTags(tags);
+                    onSelect();
                 }
             }
         } else {
@@ -318,6 +330,7 @@ public class CatalogController {
         if (treeItem instanceof Type type) {
             try {
                 typeContainer.remove(type, view, itemContainer);
+                onSelect();
             } catch (TypeNotExistException e) {
                 alert.setHeaderText(e.getMessage());
                 alert.show();
@@ -325,6 +338,7 @@ public class CatalogController {
         } else if (treeItem instanceof Item item) {
             try {
                 itemContainer.remove(item);
+                onSelect();
             } catch (ItemNotExistException e) {
                 alert.setHeaderText(e.getMessage());
                 alert.show();
@@ -350,6 +364,7 @@ public class CatalogController {
             if (treeItem instanceof Item item) {
                 try {
                     item.addTag(tagField.getText());
+                    onSelect();
                 } catch (TagExistException e) {
                     alert.setHeaderText(e.getMessage());
                     alert.show();

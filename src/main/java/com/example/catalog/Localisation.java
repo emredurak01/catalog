@@ -3,9 +3,10 @@ package com.example.catalog;
 public class Localisation {
     public static final String HELP_TITLE = "Help";
     public static final String HELP_TEXT = """
-    1. Select a type in the view and click the add button to add an item
-    2. Select a type or an item and click the remove or edit button
-    3. Select an item and click the add tag button
+    1. Select the root in the tree view and click the add button to add a type
+    2. Select a type and click the add button to add an item
+    3. Select a type or an item and click the remove or edit button
+    4. Select an item and click the add tag button
     """;
     public static final String SELECT = "Select";
     public static final String ADD = "Add";
