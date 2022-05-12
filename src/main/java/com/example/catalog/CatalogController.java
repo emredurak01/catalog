@@ -9,6 +9,9 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.GridPane;
 
 import java.util.*;
@@ -35,9 +38,17 @@ public class CatalogController {
     private TextField tagField;
     @FXML
     private TableView<List<String>> table;
+    @FXML
+    private MenuItem closeMenuItem;
+    @FXML
+    private MenuItem aboutMenuItem;
 
     @FXML
     private void initialize() {
+        closeMenuItem.setOnAction(event -> onExit());
+        closeMenuItem.setAccelerator(new KeyCodeCombination(KeyCode.C, KeyCombination.CONTROL_ANY));
+        aboutMenuItem.setOnAction(event -> onHelp());
+        aboutMenuItem.setAccelerator(new KeyCodeCombination(KeyCode.H, KeyCombination.CONTROL_ANY));
         TreeItem<String> root = new TreeItem<>();
         root.setExpanded(true);
         view.setRoot(root);
