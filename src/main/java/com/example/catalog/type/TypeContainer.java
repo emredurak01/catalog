@@ -60,7 +60,7 @@ public class TypeContainer {
     }
 
     public void write() throws IOException {
-        FileWriter w = new FileWriter(getClass().getSimpleName() + ".ser", false);
+        FileWriter w = new FileWriter(getClass().getSimpleName() + ".ser");
         Formatter f = new Formatter(w);
 
         for (Type t : types) {

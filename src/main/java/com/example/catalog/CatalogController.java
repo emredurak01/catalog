@@ -467,4 +467,12 @@ public class CatalogController {
             tagField.clear();
         }
     }
+    private boolean isInView(String value) {
+        for (TreeItem<String> treeItem2 : view.getRoot().getChildren()) {
+            if (treeItem2.getValue().equals(value)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
