@@ -51,6 +51,8 @@ public class CatalogController {
     private MenuItem closeMenuItem;
     @FXML
     private MenuItem aboutMenuItem;
+    @FXML
+    private Button saveButton;
 
     @FXML
     private void initialize() {
@@ -62,23 +64,7 @@ public class CatalogController {
         root.setExpanded(true);
         view.setRoot(root);
         view.getSelectionModel().select(root);
-        List<String> bookFieldTypes = new ArrayList<>();
-        bookFieldTypes.add("Title");
-        bookFieldTypes.add("Authors");
-        bookFieldTypes.add("Edition");
-        bookFieldTypes.add("Purchase date");
-        bookFieldTypes.add("Completion date");
-
-        List<String> cdFieldTypes = new ArrayList<>();
-        cdFieldTypes.add("Title");
-        cdFieldTypes.add("Colour");
         typeContainer.read(view);
-        try {
-            typeContainer.add(new Type("book", bookFieldTypes), view);
-            typeContainer.add(new Type("cd", cdFieldTypes), view);
-        } catch (TypeExistException e) {
-            System.out.println("default types could not be added, since they already exist");
-        }
         helpButton.setOnAction((actionEvent -> onHelp()));
         exitButton.setOnAction(actionEvent -> onExit());
         view.setOnMouseClicked(mouseEvent -> onSelect());
@@ -86,6 +72,15 @@ public class CatalogController {
         editButton.setOnAction(actionEvent -> onEdit());
         removeButton.setOnAction(actionEvent -> onRemove());
         addTagButton.setOnAction(actionEvent -> onAddTag());
+        saveButton.setOnAction(event -> {
+            try {
+                typeContainer.write();
+            } catch (IOException e) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setHeaderText(e.getMessage());
+                alert.show();
+            }
+        });
     }
 
     private void onSelect() {
@@ -122,12 +117,7 @@ public class CatalogController {
     }
 
     private void onExit() {
-        try {
-            typeContainer.write();
-            Platform.exit();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        Platform.exit();
     }
 
     public void onAdd() {
