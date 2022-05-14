@@ -53,6 +53,8 @@ public class CatalogController {
     private MenuItem aboutMenuItem;
     @FXML
     private Button saveButton;
+    @FXML
+    private TextField searchField;
 
     @FXML
     private void initialize() {
@@ -81,6 +83,36 @@ public class CatalogController {
                 alert.show();
             }
         });
+        searchField.textProperty().addListener((observable, oldValue, newValue) -> refresh(newValue));
+    }
+    private void refresh(String value) {
+        List<Item> filteredItems = new ArrayList<>();
+        List<Type> filteredTypes = new ArrayList<>();
+
+        for (Type type : typeContainer.getAll()) {
+            if (type.getName().startsWith(value) || value.isBlank()) {
+                filteredTypes.add(type);
+            }
+        }
+
+        for (Item item : itemContainer.getAll()) {
+            if (item.getName().startsWith(value) || value.isBlank()) {
+                filteredItems.add(item);
+            }
+        }
+        view.getRoot().getChildren().clear();
+
+        for (Type type : filteredTypes) {
+            if (!isInView(type.getName())) {
+                view.getRoot().getChildren().add(type);
+            }
+        }
+
+        for (Item item : filteredItems) {
+            if (!isInView(item.getType().getName())) {
+                view.getRoot().getChildren().add(item.getType());
+            }
+        }
     }
 
     private void onSelect() {
