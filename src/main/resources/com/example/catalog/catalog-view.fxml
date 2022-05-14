@@ -35,17 +35,16 @@
                 </font>
             </Label>
         </Pane>
-        <Line endX="62.49287414550781" endY="0.8928932547569275" startX="-100.0" stroke="#8e44ad" />
-        <Button disable="true" mnemonicParsing="false" prefHeight="48.0" prefWidth="163.0" style="-fx-background-color: #9B59B6;" text="Settings" textFill="WHITE">
-            <cursor>
-                <Cursor fx:constant="HAND" />
-            </cursor>
-
-            <font>
-                <Font size="15.0" />
-            </font>
-        </Button>
         <Line endX="61.69288635253906" endY="1.6928870677947998" startX="-100.0" stroke="#8e44ad" />
+      <Button fx:id="saveButton" layoutX="10.0" layoutY="163.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="200.0" style="-fx-background-color: #9B59B6;" text="Save" textFill="WHITE">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Button>
+      <Line endX="61.69288635253906" endY="1.6928870677947998" layoutX="111.0" layoutY="161.0" startX="-100.0" stroke="#8e44ad" />
         <Button fx:id="helpButton" mnemonicParsing="false" prefHeight="48.0" prefWidth="200.0" style="-fx-background-color: #9B59B6;" text="Help" textFill="WHITE">
             <cursor>
                 <Cursor fx:constant="HAND" />
@@ -76,7 +75,7 @@
         </Menu>
     </MenuBar>
     <AnchorPane layoutX="164.0" layoutY="26.0" prefHeight="472.0" prefWidth="608.0" AnchorPane.bottomAnchor="200.0" AnchorPane.leftAnchor="164.0" AnchorPane.rightAnchor="128.0" AnchorPane.topAnchor="25.0">
-        <TreeView fx:id="view" prefHeight="200.0" prefWidth="608.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+        <TreeView fx:id="view" layoutY="42.0" prefHeight="333.0" prefWidth="508.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="42.0" />
     </AnchorPane>
     <VBox prefHeight="375.0" prefWidth="129.0" AnchorPane.bottomAnchor="200.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
         <Button fx:id="addButton" mnemonicParsing="false" prefHeight="90.0" prefWidth="138.0" style="-fx-background-color: #9B59B6;" text="Add" textFill="WHITE">
