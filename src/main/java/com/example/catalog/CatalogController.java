@@ -20,9 +20,6 @@ import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.GridPane;
 
 import java.io.IOException;
-import java.io.ObjectOutput;
-import java.io.ObjectOutputStream;
-import java.nio.file.Paths;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -52,12 +49,18 @@ public class CatalogController {
     @FXML
     private MenuItem aboutMenuItem;
     @FXML
+    private MenuItem saveMenuItem;
+    @FXML
     private Button saveButton;
     @FXML
     private TextField searchField;
+    @FXML
+    private Button exportButton;
 
     @FXML
     private void initialize() {
+        saveMenuItem.setOnAction(event -> onSave());
+        saveMenuItem.setAccelerator(new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_ANY));
         closeMenuItem.setOnAction(event -> onExit());
         closeMenuItem.setAccelerator(new KeyCodeCombination(KeyCode.C, KeyCombination.CONTROL_ANY));
         aboutMenuItem.setOnAction(event -> onHelp());
@@ -67,6 +70,7 @@ public class CatalogController {
         view.setRoot(root);
         view.getSelectionModel().select(root);
         typeContainer.read(view);
+        itemContainer.read(typeContainer);
         helpButton.setOnAction((actionEvent -> onHelp()));
         exitButton.setOnAction(actionEvent -> onExit());
         view.setOnMouseClicked(mouseEvent -> onSelect());
@@ -74,17 +78,21 @@ public class CatalogController {
         editButton.setOnAction(actionEvent -> onEdit());
         removeButton.setOnAction(actionEvent -> onRemove());
         addTagButton.setOnAction(actionEvent -> onAddTag());
-        saveButton.setOnAction(event -> {
-            try {
-                typeContainer.write();
-            } catch (IOException e) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setHeaderText(e.getMessage());
-                alert.show();
-            }
-        });
+        saveButton.setOnAction(event -> onSave());
         searchField.textProperty().addListener((observable, oldValue, newValue) -> refresh(newValue));
     }
+
+    private void onSave() {
+        try {
+            typeContainer.write();
+            itemContainer.write();
+        } catch (IOException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText(e.getMessage());
+            alert.show();
+        }
+    }
+
     private void refresh(String value) {
         List<Item> filteredItems = new ArrayList<>();
         List<Type> filteredTypes = new ArrayList<>();

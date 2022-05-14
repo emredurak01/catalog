@@ -46,10 +46,10 @@ public class TypeContainer {
         itemContainer.getAll().removeIf(t -> t.getType().getName().equals(type.getName()));
     }
 
-    public void get(String name) throws TypeNotExistException {
+    public Type get(String name) throws TypeNotExistException {
         for (Type type : types) {
             if (type.getName().equals(name)) {
-                return;
+                return type;
             }
         }
         throw new TypeNotExistException();
