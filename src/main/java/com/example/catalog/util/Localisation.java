@@ -1,4 +1,4 @@
-package com.example.catalog;
+package com.example.catalog.util;
 
 public class Localisation {
     public static final String HELP_TITLE = "Help";

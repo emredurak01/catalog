@@ -4,6 +4,11 @@ import com.example.catalog.exception.item.ItemNotExistException;
 import com.example.catalog.exception.tag.TagExistException;
 import com.example.catalog.exception.type.TypeExistException;
 import com.example.catalog.exception.type.TypeNotExistException;
+import com.example.catalog.item.Item;
+import com.example.catalog.item.ItemContainer;
+import com.example.catalog.type.Type;
+import com.example.catalog.type.TypeContainer;
+import com.example.catalog.util.Localisation;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -14,6 +19,10 @@ import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.GridPane;
 
+import java.io.IOException;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -63,12 +72,12 @@ public class CatalogController {
         List<String> cdFieldTypes = new ArrayList<>();
         cdFieldTypes.add("Title");
         cdFieldTypes.add("Colour");
-
+        typeContainer.read(view);
         try {
             typeContainer.add(new Type("book", bookFieldTypes), view);
             typeContainer.add(new Type("cd", cdFieldTypes), view);
         } catch (TypeExistException e) {
-            e.printStackTrace();
+            System.out.println("default types could not be added, since they already exist");
         }
         helpButton.setOnAction((actionEvent -> onHelp()));
         exitButton.setOnAction(actionEvent -> onExit());
@@ -113,7 +122,12 @@ public class CatalogController {
     }
 
     private void onExit() {
-        Platform.exit();
+        try {
+            typeContainer.write();
+            Platform.exit();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void onAdd() {

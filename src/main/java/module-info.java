@@ -9,4 +9,10 @@ module com.example.catalog {
     opens com.example.catalog.exception.field to javafx.fxml;
     exports com.example.catalog.exception.type;
     opens com.example.catalog.exception.type to javafx.fxml;
+    exports com.example.catalog.type;
+    opens com.example.catalog.type to javafx.fxml;
+    exports com.example.catalog.item;
+    opens com.example.catalog.item to javafx.fxml;
+    exports com.example.catalog.util;
+    opens com.example.catalog.util to javafx.fxml;
 }

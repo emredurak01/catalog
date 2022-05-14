@@ -1,6 +1,7 @@
-package com.example.catalog;
+package com.example.catalog.item;
 
 import com.example.catalog.exception.item.ItemNotExistException;
+import com.example.catalog.item.Item;
 
 import java.util.ArrayList;
 import java.util.List;

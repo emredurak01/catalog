@@ -1,8 +1,9 @@
-package com.example.catalog;
+package com.example.catalog.item;
 
 import com.example.catalog.exception.item.ItemNotExistException;
 import com.example.catalog.exception.tag.TagExistException;
 import com.example.catalog.exception.tag.TagNotExistException;
+import com.example.catalog.type.Type;
 import javafx.scene.control.TreeItem;
 
 import java.util.HashSet;
