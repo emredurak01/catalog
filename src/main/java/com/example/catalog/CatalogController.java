@@ -13,13 +13,20 @@ import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.print.Printer;
 import javafx.print.PrinterJob;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.Line;
 import javafx.stage.FileChooser;
 
 import java.io.File;
@@ -32,6 +39,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class CatalogController {
     private final TypeContainer typeContainer = new TypeContainer();
     private final ItemContainer itemContainer = new ItemContainer();
+    private final List<String> tags = new ArrayList<>();
+    private final Set<String> selectedTags = new HashSet<>();
     @FXML
     private Button helpButton;
     @FXML
@@ -64,6 +73,8 @@ public class CatalogController {
     private Button exportButton;
     @FXML
     private Button printButton;
+    @FXML
+    private VBox tagBox;
 
     @FXML
     private void initialize() {
@@ -79,6 +90,37 @@ public class CatalogController {
         view.getSelectionModel().select(root);
         typeContainer.read(view);
         itemContainer.read(typeContainer);
+
+        for (Item item : itemContainer.getAll()) {
+            item.getTags().forEach(tag -> {
+                if (!tags.contains(tag)) {
+                    tags.add(tag);
+                }
+            });
+        }
+        for (int i = 0; i < tags.size(); i++) {
+            CheckBox checkBox = new CheckBox();
+            int finalI = i;
+            checkBox.setOnAction(event -> {
+                if (checkBox.isSelected()) {
+                    System.out.println("yes");
+                    selectedTags.add(tags.get(finalI));
+                } else {
+                    System.out.println("no");
+                    selectedTags.remove(tags.get(finalI));
+                }
+                for (String s :
+                        selectedTags) {
+                    System.out.println(s);
+                }
+                onSearch("");
+            });
+            Line line = new Line();
+            line.setStartX(0);
+            line.setEndX(100);
+            line.setStroke(Color.BLACK);
+            tagBox.getChildren().addAll(new Label(tags.get(i)), checkBox, line);
+        }
         helpButton.setOnAction((actionEvent -> onHelp()));
         exitButton.setOnAction(actionEvent -> onExit());
         view.setOnMouseClicked(mouseEvent -> onSelect());
@@ -87,12 +129,14 @@ public class CatalogController {
         removeButton.setOnAction(actionEvent -> onRemove());
         addTagButton.setOnAction(actionEvent -> onAddTag());
         saveButton.setOnAction(event -> onSave());
-        searchField.textProperty().addListener((observable, oldValue, newValue) -> refresh(newValue));
+        searchField.textProperty().addListener((observable, oldValue, newValue) -> onSearch(newValue));
         exportButton.setOnAction(event -> onExport());
         printButton.setOnAction(event -> onPrint());
     }
 
     private void onPrint() {
+        view.getRoot().setExpanded(true);
+        view.getRoot().getChildren().forEach(child -> child.setExpanded(true));
 
         System.out.println(Printer.getAllPrinters());
 
@@ -148,7 +192,7 @@ public class CatalogController {
         FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("html file", "*.html");
         chooser.getExtensionFilters().add(filter);
         File file = chooser.showSaveDialog(view.getScene().getWindow());
-        File f = new File(file.getName());
+        File f = new File(file.getPath());
 
         if (!file.getName().contains(".")) {
             f = new File(f.getName() + ".html");
@@ -172,7 +216,7 @@ public class CatalogController {
         }
     }
 
-    private void refresh(String value) {
+    private void onSearch(String value) {
         List<Item> filteredItems = new ArrayList<>();
         List<Type> filteredTypes = new ArrayList<>();
 
@@ -182,16 +226,23 @@ public class CatalogController {
             }
         }
 
-        for (Item item : itemContainer.getAll()) {
+        for (Item item :
+                itemContainer.getByTags(selectedTags)) {
+            System.out.println(item.getName());
+        }
+
+        for (Item item : itemContainer.getByTags(selectedTags)) {
             if (item.getName().startsWith(value) || value.isBlank()) {
                 filteredItems.add(item);
             }
         }
         view.getRoot().getChildren().clear();
 
-        for (Type type : filteredTypes) {
-            if (!isInView(type.getName())) {
-                view.getRoot().getChildren().add(type);
+        if (!selectedTags.isEmpty()) {
+            for (Type type : filteredTypes) {
+                if (!isInView(type.getName())) {
+                    view.getRoot().getChildren().add(type);
+                }
             }
         }
 
