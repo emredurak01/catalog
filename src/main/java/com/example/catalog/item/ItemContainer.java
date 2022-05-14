@@ -2,10 +2,7 @@ package com.example.catalog.item;
 
 import com.example.catalog.exception.item.ItemNotExistException;
 import com.example.catalog.exception.type.TypeNotExistException;
-import com.example.catalog.item.Item;
-import com.example.catalog.type.Type;
 import com.example.catalog.type.TypeContainer;
-import javafx.scene.control.TreeView;
 
 import java.io.FileWriter;
 import java.io.IOException;

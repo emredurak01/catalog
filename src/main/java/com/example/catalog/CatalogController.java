@@ -13,13 +13,19 @@ import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.print.Printer;
+import javafx.print.PrinterJob;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.GridPane;
+import javafx.stage.FileChooser;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -56,6 +62,8 @@ public class CatalogController {
     private TextField searchField;
     @FXML
     private Button exportButton;
+    @FXML
+    private Button printButton;
 
     @FXML
     private void initialize() {
@@ -80,6 +88,77 @@ public class CatalogController {
         addTagButton.setOnAction(actionEvent -> onAddTag());
         saveButton.setOnAction(event -> onSave());
         searchField.textProperty().addListener((observable, oldValue, newValue) -> refresh(newValue));
+        exportButton.setOnAction(event -> onExport());
+        printButton.setOnAction(event -> onPrint());
+    }
+
+    private void onPrint() {
+
+        System.out.println(Printer.getAllPrinters());
+
+        PrinterJob job = PrinterJob.createPrinterJob();
+
+        if (job.showPrintDialog(view.getScene().getWindow())){
+            boolean success = job.printPage(view);
+
+            if (success) {
+                job.endJob();
+            }
+        }
+    }
+
+    private void onExport() {
+        StringBuilder s = new StringBuilder();
+        s.append("<!doctype html>\n");
+        s.append("<html lang=\"en-gb\">\n");
+        s.append("<head>\n");
+        s.append("<title>catalog</title>\n");
+        s.append("</head>\n");
+        s.append("<body>\n");
+
+        for (Type type : typeContainer.getAll()) {
+            s.append("<li id=\"").append(type.getName()).append("\">\n");
+            s.append(type.getName()).append("\n");
+
+            for (Item item : itemContainer.getAll()) {
+                if (item.getType().equals(type)) {
+                    s.append("<ul id=\"").append(item.getName()).append("\">\n");
+                    s.append(item.getName());
+                    s.append(" {");
+
+                    for (int i = 0; i < item.getFieldValues().size(); i++) {
+                        s.append(item.getType().getFieldTypes().get(i)).append(": ").append(item.getFieldValues().get(i)).append(", ");
+                    }
+                    s.append("tags: [");
+
+                    for (String tag : item.getTags()) {
+                        s.append(tag).append(", ");
+                    }
+                    s = new StringBuilder(s.substring(0, s.length() - 2));
+                    s.append("]");
+                    s.append("}");
+                    s.append("\n</ul>\n");
+                }
+            }
+            s.append("\n</li>\n");
+        }
+        s.append("</body>\n");
+        s.append("</html>\n");
+        FileChooser chooser = new FileChooser();
+        FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("html file", "*.html");
+        chooser.getExtensionFilters().add(filter);
+        File file = chooser.showSaveDialog(view.getScene().getWindow());
+        File f = new File(file.getName());
+
+        if (!file.getName().contains(".")) {
+            f = new File(f.getName() + ".html");
+        }
+
+        try {
+            Files.writeString(Path.of(f.getPath()), s);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void onSave() {
@@ -203,7 +282,13 @@ public class CatalogController {
             List<String> fieldValues = new ArrayList<>();
 
             for (TextField f : textFields) {
-                fieldValues.add(f.getText());
+                if(f.getText().contains(",")) {
+                    alert.setHeaderText(Localisation.USED_COMMA);
+                    alert.show();
+                    return null;
+                } else {
+                    fieldValues.add(f.getText());
+                }
             }
             return new Item(name.getText(), type, fieldValues);
         });
@@ -215,7 +300,11 @@ public class CatalogController {
             if (item.getName().trim().isEmpty()) {
                 alert.setHeaderText(Localisation.EMPTY_NAME);
                 alert.show();
-            } else {
+            } else if(item.getName().contains(",")) {
+                alert.setHeaderText(Localisation.USED_COMMA);
+                alert.show();
+            }
+            else {
                 itemContainer.add(item);
             }
         }
@@ -260,7 +349,12 @@ public class CatalogController {
                 if (type.getName().trim().isEmpty()) {
                     alert.setHeaderText(Localisation.EMPTY_NAME);
                     alert.show();
-                } else {
+                } else if(type.getName().contains(",")) {
+                    alert.setHeaderText(Localisation.USED_COMMA);
+                    alert.show();
+                }
+
+                else {
                     typeContainer.add(type, view);
                 }
             } catch (TypeExistException e) {
@@ -476,8 +570,8 @@ public class CatalogController {
         }
     }
     private boolean isInView(String value) {
-        for (TreeItem<String> treeItem2 : view.getRoot().getChildren()) {
-            if (treeItem2.getValue().equals(value)) {
+        for (TreeItem<String> treeItem : view.getRoot().getChildren()) {
+            if (treeItem.getValue().equals(value)) {
                 return true;
             }
         }
