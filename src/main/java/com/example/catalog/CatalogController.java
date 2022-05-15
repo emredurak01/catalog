@@ -218,33 +218,15 @@ public class CatalogController {
 
     private void onSearch(String value) {
         List<Item> filteredItems = new ArrayList<>();
-        List<Type> filteredTypes = new ArrayList<>();
-
-        for (Type type : typeContainer.getAll()) {
-            if (type.getName().startsWith(value) || value.isBlank()) {
-                filteredTypes.add(type);
-            }
-        }
-
-        for (Item item :
-                itemContainer.getByTags(selectedTags)) {
-            System.out.println(item.getName());
-        }
 
         for (Item item : itemContainer.getByTags(selectedTags)) {
             if (item.getName().startsWith(value) || value.isBlank()) {
                 filteredItems.add(item);
+            } else if ((item.getType().getName().startsWith(value) || value.isBlank()) && !selectedTags.isEmpty()) {
+                filteredItems.add(item);
             }
         }
         view.getRoot().getChildren().clear();
-
-        if (!selectedTags.isEmpty()) {
-            for (Type type : filteredTypes) {
-                if (!isInView(type.getName())) {
-                    view.getRoot().getChildren().add(type);
-                }
-            }
-        }
 
         for (Item item : filteredItems) {
             if (!isInView(item.getType().getName())) {
