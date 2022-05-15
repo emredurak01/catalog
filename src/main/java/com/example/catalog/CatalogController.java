@@ -118,8 +118,6 @@ public class CatalogController {
             hbox.setPadding(new Insets(1));
             hbox.getChildren().addAll(checkBox, new Label(tags.get(i)));
             tagBox.getChildren().addAll(hbox);
-
-            //tagBox.getChildren().addAll(new Label(tags.get(i)), checkBox, line);
         }
         helpButton.setOnAction((actionEvent -> onHelp()));
         exitButton.setOnAction(actionEvent -> onExit());
@@ -225,13 +223,13 @@ public class CatalogController {
         List<Item> filteredItems = new ArrayList<>(itemContainer.getAll());
         view.getRoot().getChildren().clear();
 
-        /* if (selectedTags.isEmpty()) {
+        if (selectedTags.isEmpty()) {
             for (Type type : typeContainer.getAll()) {
                 if (type.getName().startsWith(value)) {
                     view.getRoot().getChildren().add(type);
                 }
             }
-        } */
+        }
 
         for (Item item : itemContainer.getAll()) {
             if (!item.getName().startsWith(value) || !itemContainer.getByTags(selectedTags).contains(item)) {
@@ -602,6 +600,20 @@ public class CatalogController {
 
             if (treeItem instanceof Item item) {
                 try {
+                    CheckBox checkBox = new CheckBox();
+                    String tag = tagField.getText();
+                    checkBox.setOnAction(event -> {
+                        if (checkBox.isSelected()) {
+                            selectedTags.add(tag);
+                        } else {
+                            selectedTags.remove(tag);
+                        }
+                        onSearch(searchField.getText());
+                    });
+                    HBox hbox = new HBox(5);
+                    hbox.setPadding(new Insets(1));
+                    hbox.getChildren().addAll(checkBox, new Label(tag));
+                    tagBox.getChildren().addAll(hbox);
                     item.addTag(tagField.getText());
                     onSelect();
                 } catch (TagExistException e) {
