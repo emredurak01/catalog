@@ -13,9 +13,11 @@ import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.print.Printer;
 import javafx.print.PrinterJob;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
@@ -74,6 +76,8 @@ public class CatalogController {
     @FXML
     private Button printButton;
     @FXML
+    private ScrollPane tagPane;
+    @FXML
     private VBox tagBox;
     private final List<Item> removedItems = new ArrayList<>();
 
@@ -104,23 +108,19 @@ public class CatalogController {
             int finalI = i;
             checkBox.setOnAction(event -> {
                 if (checkBox.isSelected()) {
-                    System.out.println("yes");
                     selectedTags.add(tags.get(finalI));
                 } else {
-                    System.out.println("no");
                     selectedTags.remove(tags.get(finalI));
-                }
-                for (String s :
-                        selectedTags) {
-                    System.out.println(s);
+
                 }
                 onSearch("");
             });
-            Line line = new Line();
-            line.setStartX(0);
-            line.setEndX(100);
-            line.setStroke(Color.BLACK);
-            tagBox.getChildren().addAll(new Label(tags.get(i)), checkBox, line);
+            HBox hbox = new HBox(5);
+            hbox.setPadding(new Insets(1));
+            hbox.getChildren().addAll(checkBox, new Label(tags.get(i)));
+            tagBox.getChildren().addAll(hbox);
+
+            //tagBox.getChildren().addAll(new Label(tags.get(i)), checkBox, line);
         }
         helpButton.setOnAction((actionEvent -> onHelp()));
         exitButton.setOnAction(actionEvent -> onExit());
@@ -223,22 +223,31 @@ public class CatalogController {
         }
         removedItems.clear();
         List<Item> filteredItems = new ArrayList<>();
+        view.getRoot().getChildren().clear();
+
+        if (selectedTags.isEmpty()) {
+            for (Type type : typeContainer.getAll()) {
+                if (type.getName().startsWith(value)) {
+                    view.getRoot().getChildren().add(type);
+                }
+            }
+        }
 
         for (Item item : itemContainer.getByTags(selectedTags)) {
             if (value.isBlank()) {
                 filteredItems.add(item);
+                System.out.println(filteredItems);
             } else if (item.getName().startsWith(value)) {
                 filteredItems.add(item);
-            } else if (item.getType().getName().startsWith(value)) {
-                if (!selectedTags.isEmpty()) {
-                    filteredItems.add(item);
-                }
+                System.out.println(filteredItems);
             } else {
-                item.getType().getChildren().remove(item);
-                removedItems.add(item);
+                if (!selectedTags.isEmpty()) {
+                    item.getType().getChildren().remove(item);
+                    removedItems.add(item);
+                    System.out.println(filteredItems);
+                }
             }
         }
-        view.getRoot().getChildren().clear();
 
         for (Item item : filteredItems) {
             if (!isInView(item.getType().getName())) {
