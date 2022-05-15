@@ -76,8 +76,6 @@ public class CatalogController {
     @FXML
     private Button printButton;
     @FXML
-    private ScrollPane tagPane;
-    @FXML
     private VBox tagBox;
     private final List<Item> removedItems = new ArrayList<>();
 
@@ -95,30 +93,7 @@ public class CatalogController {
         view.getSelectionModel().select(root);
         typeContainer.read(view);
         itemContainer.read(typeContainer);
-
-        for (Item item : itemContainer.getAll()) {
-            item.getTags().forEach(tag -> {
-                if (!tags.contains(tag)) {
-                    tags.add(tag);
-                }
-            });
-        }
-        for (int i = 0; i < tags.size(); i++) {
-            CheckBox checkBox = new CheckBox();
-            int finalI = i;
-            checkBox.setOnAction(event -> {
-                if (checkBox.isSelected()) {
-                    selectedTags.add(tags.get(finalI));
-                } else {
-                    selectedTags.remove(tags.get(finalI));
-                }
-                onSearch(searchField.getText());
-            });
-            HBox hbox = new HBox(5);
-            hbox.setPadding(new Insets(1));
-            hbox.getChildren().addAll(checkBox, new Label(tags.get(i)));
-            tagBox.getChildren().addAll(hbox);
-        }
+        tagRefresh();
         helpButton.setOnAction((actionEvent -> onHelp()));
         exitButton.setOnAction(actionEvent -> onExit());
         view.setOnMouseClicked(mouseEvent -> onSelect());
@@ -543,20 +518,51 @@ public class CatalogController {
                         fieldValues.add(f.getText());
                     }
                     item.setFieldValues(fieldValues);
-                    Set<String> tags = new HashSet<>();
+                    Set<String> tags2 = new HashSet<>();
                     String[] trimmedTags = tagsField.getText().trim().split(",");
 
                     for (int i = 0; i < trimmedTags.length; i++) {
                         trimmedTags[i] = trimmedTags[i].trim();
                     }
-                    Collections.addAll(tags, trimmedTags);
-                    item.setTags(tags);
+                    Collections.addAll(tags2, trimmedTags);
+                    item.setTags(tags2);
+                    tagRefresh();
                     onSelect();
                 }
             }
         } else {
             alert.setHeaderText(Localisation.SELECTED_ROOT);
             alert.show();
+        }
+    }
+
+    private void tagRefresh() {
+        tags.clear();
+
+        for (Item i : itemContainer.getAll()) {
+            i.getTags().forEach(tag -> {
+                if (!tags.contains(tag)) {
+                    tags.add(tag);
+                }
+            });
+        }
+        tagBox.getChildren().clear();
+
+        for (int i = 0; i < tags.size(); i++) {
+            CheckBox checkBox = new CheckBox();
+            int finalI = i;
+            checkBox.setOnAction(event -> {
+                if (checkBox.isSelected()) {
+                    selectedTags.add(tags.get(finalI));
+                } else {
+                    selectedTags.remove(tags.get(finalI));
+                }
+                onSearch(searchField.getText());
+            });
+            HBox hbox = new HBox(5);
+            hbox.setPadding(new Insets(1));
+            hbox.getChildren().addAll(checkBox, new Label(tags.get(i)));
+            tagBox.getChildren().addAll(hbox);
         }
     }
 
@@ -567,6 +573,7 @@ public class CatalogController {
         if (treeItem instanceof Type type) {
             try {
                 typeContainer.remove(type, view, itemContainer);
+                tagRefresh();
                 onSelect();
             } catch (TypeNotExistException e) {
                 alert.setHeaderText(e.getMessage());
@@ -575,6 +582,7 @@ public class CatalogController {
         } else if (treeItem instanceof Item item) {
             try {
                 itemContainer.remove(item);
+                tagRefresh();
                 onSelect();
             } catch (ItemNotExistException e) {
                 alert.setHeaderText(e.getMessage());
@@ -600,21 +608,24 @@ public class CatalogController {
 
             if (treeItem instanceof Item item) {
                 try {
-                    CheckBox checkBox = new CheckBox();
-                    String tag = tagField.getText();
-                    checkBox.setOnAction(event -> {
-                        if (checkBox.isSelected()) {
-                            selectedTags.add(tag);
-                        } else {
-                            selectedTags.remove(tag);
-                        }
-                        onSearch(searchField.getText());
-                    });
-                    HBox hbox = new HBox(5);
-                    hbox.setPadding(new Insets(1));
-                    hbox.getChildren().addAll(checkBox, new Label(tag));
-                    tagBox.getChildren().addAll(hbox);
                     item.addTag(tagField.getText());
+
+                    if (!tags.contains(tagField.getText())) {
+                        CheckBox checkBox = new CheckBox();
+                        String tag = tagField.getText();
+                        checkBox.setOnAction(event -> {
+                            if (checkBox.isSelected()) {
+                                selectedTags.add(tag);
+                            } else {
+                                selectedTags.remove(tag);
+                            }
+                            onSearch(searchField.getText());
+                        });
+                        HBox hbox = new HBox(5);
+                        hbox.setPadding(new Insets(1));
+                        hbox.getChildren().addAll(checkBox, new Label(tag));
+                        tagBox.getChildren().addAll(hbox);
+                    }
                     onSelect();
                 } catch (TagExistException e) {
                     alert.setHeaderText(e.getMessage());
