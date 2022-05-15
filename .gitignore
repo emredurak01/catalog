@@ -39,5 +39,5 @@ hs_err_pid*
 replay_pid*
 
 # saved data
-*.ser
+*.save
 *.html

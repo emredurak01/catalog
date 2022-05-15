@@ -60,7 +60,7 @@ public class TypeContainer {
     }
 
     public void write() throws IOException {
-        FileWriter w = new FileWriter(getClass().getSimpleName() + ".ser");
+        FileWriter w = new FileWriter("types.save");
         Formatter f = new Formatter(w);
 
         for (Type t : types) {
@@ -81,7 +81,7 @@ public class TypeContainer {
 
     public void read(TreeView<String> view) {
         try {
-            Scanner s = new Scanner(Paths.get(getClass().getSimpleName() + ".ser"));
+            Scanner s = new Scanner(Paths.get("types.save"));
             view.getRoot().getChildren().clear();
 
             while (s.hasNextLine()) {
@@ -98,7 +98,7 @@ public class TypeContainer {
             }
             s.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage() + " could not be found.");
         }
     }
 }

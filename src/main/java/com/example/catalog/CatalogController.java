@@ -165,16 +165,19 @@ public class CatalogController {
         FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("html file", "*.html");
         chooser.getExtensionFilters().add(filter);
         File file = chooser.showSaveDialog(view.getScene().getWindow());
-        File f = new File(file.getPath());
 
-        if (!file.getName().contains(".")) {
-            f = new File(f.getPath() + ".html");
-        }
+        if (file != null) {
+            File f = new File(file.getPath());
 
-        try {
-            Files.writeString(Path.of(f.getPath()), s);
-        } catch (IOException e) {
-            e.printStackTrace();
+            if (!file.getName().contains(".")) {
+                f = new File(f.getPath() + ".html");
+            }
+
+            try {
+                Files.writeString(Path.of(f.getPath()), s);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 

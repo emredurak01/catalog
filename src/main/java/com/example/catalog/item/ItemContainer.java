@@ -45,7 +45,7 @@ public class ItemContainer {
     }
 
     public void write() throws IOException {
-        FileWriter w = new FileWriter(getClass().getSimpleName() + ".ser");
+        FileWriter w = new FileWriter("items.save");
         Formatter f = new Formatter(w);
 
         for (Item item : items) {
@@ -67,7 +67,7 @@ public class ItemContainer {
 
     public void read(TypeContainer typeContainer) {
         try {
-            Scanner s = new Scanner(Paths.get(getClass().getSimpleName() + ".ser"));
+            Scanner s = new Scanner(Paths.get("items.save"));
 
             while (s.hasNextLine()) {
                 String[] line = s.nextLine().split(",");
@@ -92,7 +92,7 @@ public class ItemContainer {
             }
             s.close();
         } catch (IOException | TypeNotExistException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage() + " could not be found.");
         }
     }
 }
