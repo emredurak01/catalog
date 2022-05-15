@@ -270,7 +270,7 @@ public class CatalogController {
         try {
             Parent parent = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("help.fxml")));
             Stage stage = new Stage();
-            stage.setTitle("sa");
+            stage.setTitle("Help");
             stage.setScene(new Scene(parent, 600, 400));
             stage.setMinWidth(605);
             stage.setMinHeight(405);
@@ -516,7 +516,12 @@ public class CatalogController {
                     for (Item item : itemContainer.getAll()) {
                         if (item.getType().equals(type)) {
                             for (Integer removedIndex : removedIndices) {
-                                item.getFieldValues().set(removedIndex, null);
+                                try {
+                                    item.getFieldValues().set(removedIndex, null);
+                                } catch (Exception e) {
+                                    System.out.println("aaaaaaaaaaaaaaaaa");
+                                }
+
                             }
                             item.getFieldValues().removeIf(Objects::isNull);
 
