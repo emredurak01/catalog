@@ -75,6 +75,7 @@ public class CatalogController {
     private Button printButton;
     @FXML
     private VBox tagBox;
+    private final List<Item> removedItems = new ArrayList<>();
 
     @FXML
     private void initialize() {
@@ -217,13 +218,24 @@ public class CatalogController {
     }
 
     private void onSearch(String value) {
+        for (Item item : removedItems) {
+            item.getType().getChildren().add(item);
+        }
+        removedItems.clear();
         List<Item> filteredItems = new ArrayList<>();
 
         for (Item item : itemContainer.getByTags(selectedTags)) {
-            if (item.getName().startsWith(value) || value.isBlank()) {
+            if (value.isBlank()) {
                 filteredItems.add(item);
-            } else if ((item.getType().getName().startsWith(value) || value.isBlank()) && !selectedTags.isEmpty()) {
+            } else if (item.getName().startsWith(value)) {
                 filteredItems.add(item);
+            } else if (item.getType().getName().startsWith(value)) {
+                if (!selectedTags.isEmpty()) {
+                    filteredItems.add(item);
+                }
+            } else {
+                item.getType().getChildren().remove(item);
+                removedItems.add(item);
             }
         }
         view.getRoot().getChildren().clear();
