@@ -195,7 +195,7 @@ public class CatalogController {
         File f = new File(file.getPath());
 
         if (!file.getName().contains(".")) {
-            f = new File(f.getName() + ".html");
+            f = new File(f.getPath() + ".html");
         }
 
         try {

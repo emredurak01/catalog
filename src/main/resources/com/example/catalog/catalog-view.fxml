@@ -93,8 +93,8 @@
             <MenuItem fx:id="aboutMenuItem" mnemonicParsing="false" text="About" />
         </Menu>
     </MenuBar>
-    <AnchorPane layoutX="164.0" layoutY="26.0" prefHeight="472.0" prefWidth="608.0" AnchorPane.bottomAnchor="200.0" AnchorPane.leftAnchor="164.0" AnchorPane.rightAnchor="128.0" AnchorPane.topAnchor="25.0">
-        <TreeView fx:id="view" layoutY="24.0" prefHeight="352.0" prefWidth="508.0" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="24.0" />
+    <AnchorPane layoutX="164.0" layoutY="26.0" prefHeight="517.0" prefWidth="508.0" AnchorPane.bottomAnchor="58.0" AnchorPane.leftAnchor="164.0" AnchorPane.rightAnchor="128.0" AnchorPane.topAnchor="25.0">
+        <TreeView fx:id="view" layoutY="24.0" prefHeight="486.0" prefWidth="508.0" AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="24.0" />
       <TextField fx:id="searchField" layoutY="2.0" prefHeight="25.0" prefWidth="508.0" promptText="Search" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
     </AnchorPane>
     <VBox prefHeight="375.0" prefWidth="129.0" AnchorPane.bottomAnchor="200.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
@@ -134,6 +134,6 @@
       <VBox fx:id="tagBox" prefHeight="200.0" prefWidth="100.0" />
     </VBox>
     <AnchorPane prefHeight="200.0" prefWidth="736.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="164.0" AnchorPane.rightAnchor="0.0">
-        <TableView fx:id="table" prefHeight="200.0" prefWidth="736.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+        <TableView fx:id="table" layoutY="141.0" prefHeight="59.0" prefWidth="636.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="141.0" />
     </AnchorPane>
 </AnchorPane>
