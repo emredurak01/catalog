@@ -111,9 +111,8 @@ public class CatalogController {
                     selectedTags.add(tags.get(finalI));
                 } else {
                     selectedTags.remove(tags.get(finalI));
-
                 }
-                onSearch("");
+                onSearch(searchField.getText());
             });
             HBox hbox = new HBox(5);
             hbox.setPadding(new Insets(1));
@@ -222,30 +221,22 @@ public class CatalogController {
             item.getType().getChildren().add(item);
         }
         removedItems.clear();
-        List<Item> filteredItems = new ArrayList<>();
+
+        List<Item> filteredItems = new ArrayList<>(itemContainer.getAll());
         view.getRoot().getChildren().clear();
 
-        if (selectedTags.isEmpty()) {
+        /* if (selectedTags.isEmpty()) {
             for (Type type : typeContainer.getAll()) {
                 if (type.getName().startsWith(value)) {
                     view.getRoot().getChildren().add(type);
                 }
             }
-        }
+        } */
 
-        for (Item item : itemContainer.getByTags(selectedTags)) {
-            if (value.isBlank()) {
-                filteredItems.add(item);
-                System.out.println(filteredItems);
-            } else if (item.getName().startsWith(value)) {
-                filteredItems.add(item);
-                System.out.println(filteredItems);
-            } else {
-                if (!selectedTags.isEmpty()) {
-                    item.getType().getChildren().remove(item);
-                    removedItems.add(item);
-                    System.out.println(filteredItems);
-                }
+        for (Item item : itemContainer.getAll()) {
+            if (!item.getName().startsWith(value) || !itemContainer.getByTags(selectedTags).contains(item)) {
+                item.getType().getChildren().remove(item);
+                removedItems.add(item);
             }
         }
 
