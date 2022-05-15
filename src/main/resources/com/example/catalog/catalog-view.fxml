@@ -1,14 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.paint.*?>
-<?import javafx.scene.shape.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TreeView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.paint.LinearGradient?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.shape.Polyline?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #F5EEF8;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.catalog.CatalogController">
+<AnchorPane prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #F5EEF8;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.catalog.CatalogController">
     <VBox prefHeight="642.0" prefWidth="164.0" style="-fx-background-color: #9B59B6;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
         <Pane prefHeight="150.0" prefWidth="165.0">
             <Polyline layoutX="50.0" layoutY="40.0" points="-50.0, -40.0, 0.8000068664550781, -39.999996185302734, -25.300012588500977, 56.0, -50.0000114440918, -39.999996185302734" stroke="#1f618d" strokeType="INSIDE">
@@ -97,8 +109,8 @@
         <TreeView fx:id="view" layoutY="24.0" prefHeight="486.0" prefWidth="508.0" AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="24.0" />
       <TextField fx:id="searchField" layoutY="2.0" prefHeight="25.0" prefWidth="508.0" promptText="Search" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
     </AnchorPane>
-    <VBox prefHeight="375.0" prefWidth="129.0" AnchorPane.bottomAnchor="200.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
-        <Button fx:id="addButton" mnemonicParsing="false" prefHeight="90.0" prefWidth="138.0" style="-fx-background-color: #9B59B6;" text="Add" textFill="WHITE">
+    <VBox prefHeight="265.0" prefWidth="129.0" AnchorPane.bottomAnchor="310.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
+        <Button fx:id="addButton" mnemonicParsing="false" prefHeight="60.0" prefWidth="129.0" style="-fx-background-color: #9B59B6;" text="Add" textFill="WHITE">
             <cursor>
                 <Cursor fx:constant="HAND" />
             </cursor>
@@ -106,7 +118,7 @@
                 <Font size="15.0" />
             </font>
         </Button>
-        <Button fx:id="editButton" mnemonicParsing="false" prefHeight="90.0" prefWidth="138.0" style="-fx-background-color: #9B59B6;" text="Edit" textFill="WHITE">
+        <Button fx:id="editButton" mnemonicParsing="false" prefHeight="60.0" prefWidth="138.0" style="-fx-background-color: #9B59B6;" text="Edit" textFill="WHITE">
             <cursor>
                 <Cursor fx:constant="HAND" />
             </cursor>
@@ -114,7 +126,7 @@
                 <Font size="15.0" />
             </font>
         </Button>
-        <Button fx:id="removeButton" mnemonicParsing="false" prefHeight="90.0" prefWidth="138.0" style="-fx-background-color: #9B59B6;" text="Remove" textFill="WHITE">
+        <Button fx:id="removeButton" mnemonicParsing="false" prefHeight="60.0" prefWidth="138.0" style="-fx-background-color: #9B59B6;" text="Remove" textFill="WHITE">
             <cursor>
                 <Cursor fx:constant="HAND" />
             </cursor>
@@ -122,7 +134,7 @@
                 <Font size="15.0" />
             </font>
         </Button>
-        <Button fx:id="addTagButton" mnemonicParsing="false" prefHeight="90.0" prefWidth="138.0" style="-fx-background-color: #9B59B6;" text="Add Tag" textFill="WHITE">
+        <Button fx:id="addTagButton" mnemonicParsing="false" prefHeight="60.0" prefWidth="138.0" style="-fx-background-color: #9B59B6;" text="Add Tag" textFill="WHITE">
             <cursor>
                 <Cursor fx:constant="HAND" />
             </cursor>
@@ -130,10 +142,10 @@
                 <Font size="15.0" />
             </font>
         </Button>
-        <TextField fx:id="tagField" promptText="name" />
-      <VBox fx:id="tagBox" prefHeight="200.0" prefWidth="100.0" />
+        <TextField fx:id="tagField" prefHeight="18.0" prefWidth="129.0" promptText="name" />
     </VBox>
-    <AnchorPane prefHeight="200.0" prefWidth="736.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="164.0" AnchorPane.rightAnchor="0.0">
-        <TableView fx:id="table" layoutY="141.0" prefHeight="59.0" prefWidth="636.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="141.0" />
+    <AnchorPane prefHeight="66.0" prefWidth="636.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="164.0" AnchorPane.rightAnchor="0.0">
+        <TableView fx:id="table" layoutY="23.0" prefHeight="50.0" prefWidth="636.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
     </AnchorPane>
+   <VBox fx:id="tagBox" layoutX="672.0" layoutY="289.0" prefHeight="246.0" prefWidth="129.0" AnchorPane.bottomAnchor="65.0" AnchorPane.rightAnchor="0.0" />
 </AnchorPane>

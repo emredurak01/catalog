@@ -104,15 +104,9 @@ public class CatalogController {
             int finalI = i;
             checkBox.setOnAction(event -> {
                 if (checkBox.isSelected()) {
-                    System.out.println("yes");
                     selectedTags.add(tags.get(finalI));
                 } else {
-                    System.out.println("no");
                     selectedTags.remove(tags.get(finalI));
-                }
-                for (String s :
-                        selectedTags) {
-                    System.out.println(s);
                 }
                 onSearch("");
             });
@@ -223,22 +217,28 @@ public class CatalogController {
         }
         removedItems.clear();
         List<Item> filteredItems = new ArrayList<>();
+        view.getRoot().getChildren().clear();
+
+        if (selectedTags.isEmpty()) {
+            for (Type type : typeContainer.getAll()) {
+                if (type.getName().startsWith(value)) {
+                    view.getRoot().getChildren().add(type);
+                }
+            }
+        }
 
         for (Item item : itemContainer.getByTags(selectedTags)) {
             if (value.isBlank()) {
                 filteredItems.add(item);
             } else if (item.getName().startsWith(value)) {
                 filteredItems.add(item);
-            } else if (item.getType().getName().startsWith(value)) {
-                if (!selectedTags.isEmpty()) {
-                    filteredItems.add(item);
-                }
             } else {
-                item.getType().getChildren().remove(item);
-                removedItems.add(item);
+                if (!selectedTags.isEmpty()) {
+                    item.getType().getChildren().remove(item);
+                    removedItems.add(item);
+                }
             }
         }
-        view.getRoot().getChildren().clear();
 
         for (Item item : filteredItems) {
             if (!isInView(item.getType().getName())) {
