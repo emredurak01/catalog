@@ -7,6 +7,7 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.TreeView?>
@@ -66,7 +67,7 @@
          </font>
       </Button>
       <Line endX="61.69288635253906" endY="1.6928870677947998" startX="-100.0" stroke="#8e44ad" />
-      <Button fx:id="printButton" disable="true" mnemonicParsing="false" prefHeight="48.0" prefWidth="200.0" style="-fx-background-color: #9B59B6;" text="Print" textFill="WHITE">
+      <Button fx:id="printButton" mnemonicParsing="false" prefHeight="48.0" prefWidth="200.0" style="-fx-background-color: #9B59B6;" text="Print" textFill="WHITE">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
@@ -147,5 +148,13 @@
     <AnchorPane prefHeight="66.0" prefWidth="636.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="164.0" AnchorPane.rightAnchor="0.0">
         <TableView fx:id="table" layoutY="23.0" prefHeight="50.0" prefWidth="636.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
     </AnchorPane>
-   <VBox fx:id="tagBox" layoutX="672.0" layoutY="289.0" prefHeight="246.0" prefWidth="129.0" AnchorPane.bottomAnchor="65.0" AnchorPane.rightAnchor="0.0" />
+   <ScrollPane fx:id="tagPane" layoutX="742.0" layoutY="289.0" prefHeight="246.0" prefWidth="129.0" AnchorPane.bottomAnchor="65.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="289.0">
+      <content>
+         <VBox fx:id="tagBox" prefHeight="242.0" prefWidth="127.0">
+            <padding>
+               <Insets top="5.0" />
+            </padding>
+         </VBox>
+      </content>
+   </ScrollPane>
 </AnchorPane>

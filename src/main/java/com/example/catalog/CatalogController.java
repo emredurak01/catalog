@@ -13,9 +13,11 @@ import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.print.Printer;
 import javafx.print.PrinterJob;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
@@ -74,6 +76,8 @@ public class CatalogController {
     @FXML
     private Button printButton;
     @FXML
+    private ScrollPane tagPane;
+    @FXML
     private VBox tagBox;
     private final List<Item> removedItems = new ArrayList<>();
 
@@ -105,16 +109,21 @@ public class CatalogController {
             checkBox.setOnAction(event -> {
                 if (checkBox.isSelected()) {
                     selectedTags.add(tags.get(finalI));
+                    System.out.println("yes");
                 } else {
                     selectedTags.remove(tags.get(finalI));
+                    System.out.println("no");
+
                 }
+                System.out.println(selectedTags);
                 onSearch("");
             });
-            Line line = new Line();
-            line.setStartX(0);
-            line.setEndX(100);
-            line.setStroke(Color.BLACK);
-            tagBox.getChildren().addAll(new Label(tags.get(i)), checkBox, line);
+            HBox hbox = new HBox(5);
+            hbox.setPadding(new Insets(1));
+            hbox.getChildren().addAll(checkBox, new Label(tags.get(i)));
+            tagBox.getChildren().addAll(hbox);
+
+            //tagBox.getChildren().addAll(new Label(tags.get(i)), checkBox, line);
         }
         helpButton.setOnAction((actionEvent -> onHelp()));
         exitButton.setOnAction(actionEvent -> onExit());
