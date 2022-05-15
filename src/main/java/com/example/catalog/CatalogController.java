@@ -13,11 +13,14 @@ import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.print.Printer;
 import javafx.print.PrinterJob;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
@@ -30,6 +33,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Line;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
@@ -68,6 +72,10 @@ public class CatalogController {
     @FXML
     private MenuItem saveMenuItem;
     @FXML
+    private MenuItem printMenuItem;
+    @FXML
+    private MenuItem exportMenuItem;
+    @FXML
     private Button saveButton;
     @FXML
     private TextField searchField;
@@ -83,6 +91,10 @@ public class CatalogController {
     private void initialize() {
         saveMenuItem.setOnAction(event -> onSave());
         saveMenuItem.setAccelerator(new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN));
+        exportMenuItem.setOnAction(event -> onExport());
+        exportMenuItem.setAccelerator(new KeyCodeCombination(KeyCode.E, KeyCombination.CONTROL_DOWN));
+        printMenuItem.setOnAction(event -> onPrint());
+        printMenuItem.setAccelerator(new KeyCodeCombination(KeyCode.P, KeyCombination.CONTROL_DOWN));
         closeMenuItem.setOnAction(event -> onExit());
         closeMenuItem.setAccelerator(new KeyCodeCombination(KeyCode.C, KeyCombination.CONTROL_DOWN));
         aboutMenuItem.setOnAction(event -> onHelp());
@@ -110,8 +122,6 @@ public class CatalogController {
     private void onPrint() {
         view.getRoot().setExpanded(true);
         view.getRoot().getChildren().forEach(child -> child.setExpanded(true));
-
-        System.out.println(Printer.getAllPrinters());
 
         PrinterJob job = PrinterJob.createPrinterJob();
 
@@ -183,11 +193,12 @@ public class CatalogController {
 
     private void onSave() {
         Alert alert;
+
         try {
             typeContainer.write();
             itemContainer.write();
             alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setHeaderText("Save successful");
+            alert.setHeaderText(Localisation.SAVE_SUCCESS);
             alert.show();
         } catch (IOException e) {
             alert = new Alert(Alert.AlertType.ERROR);
@@ -207,22 +218,19 @@ public class CatalogController {
 
         if (selectedTags.isEmpty()) {
             for (Type type : typeContainer.getAll()) {
-                if (type.getName().startsWith(value)) {
+                if (type.getName().contains(value)) {
                     view.getRoot().getChildren().add(type);
                 }
             }
         }
 
         for (Item item : itemContainer.getAll()) {
-            if (!item.getName().startsWith(value) || !itemContainer.getByTags(selectedTags).contains(item)) {
+            if (!item.getName().contains(value) || !itemContainer.getByTags(selectedTags).contains(item)) {
                 item.getType().getChildren().remove(item);
                 filteredItems.remove(item);
                 removedItems.add(item);
             }
         }
-
-        System.out.println(itemContainer.getByTags(selectedTags));
-        System.out.println(filteredItems);
 
         for (Item item : filteredItems) {
             if (!isInView(item.getType().getName())) {
@@ -257,11 +265,28 @@ public class CatalogController {
         }
     }
 
+    @FXML
     private void onHelp() {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(Localisation.HELP_TITLE);
-        alert.setHeaderText(Localisation.HELP_TEXT);
-        alert.show();
+        try {
+            Parent parent = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("help.fxml")));
+            Stage stage = new Stage();
+            stage.setTitle("sa");
+            stage.setScene(new Scene(parent, 600, 400));
+            stage.setMinWidth(605);
+            stage.setMinHeight(405);
+            stage.setResizable(false);
+
+
+            stage.show
+                    ();
+
+        } catch (IOException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText("help fail");
+            System.out.println("**********************"+e);
+
+            alert.show();
+        }
     }
 
     private void onExit() {

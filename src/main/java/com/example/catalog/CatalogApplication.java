@@ -15,6 +15,8 @@ public class CatalogApplication extends Application {
         Parent parent = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("catalog-view.fxml")));
         stage.setTitle("Catalog");
         stage.setScene(new Scene(parent, 900, 600));
+        stage.setMinWidth(905);
+        stage.setMinHeight(605);
         stage.show();
     }
 
