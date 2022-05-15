@@ -41,12 +41,7 @@ public class ItemContainer {
                 items.add(item);
             }
         }
-
-        if (items.isEmpty()) {
-            return this.items;
-        } else {
-            return items;
-        }
+        return items;
     }
 
     public void write() throws IOException {

@@ -236,9 +236,13 @@ public class CatalogController {
         for (Item item : itemContainer.getAll()) {
             if (!item.getName().startsWith(value) || !itemContainer.getByTags(selectedTags).contains(item)) {
                 item.getType().getChildren().remove(item);
+                filteredItems.remove(item);
                 removedItems.add(item);
             }
         }
+
+        System.out.println(itemContainer.getByTags(selectedTags));
+        System.out.println(filteredItems);
 
         for (Item item : filteredItems) {
             if (!isInView(item.getType().getName())) {
