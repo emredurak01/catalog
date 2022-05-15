@@ -21,4 +21,5 @@ public class Localisation {
     public static final String SELECTED_TYPE = "Type is selected";
     public static final String BLANK_TAG = "Tag is blank";
     public static final String USED_COMMA = "Comma is not allowed";
+    public static final String EMPTY_TAG = "Tag can not be blank";
 }

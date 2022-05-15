@@ -82,11 +82,11 @@ public class CatalogController {
     @FXML
     private void initialize() {
         saveMenuItem.setOnAction(event -> onSave());
-        saveMenuItem.setAccelerator(new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_ANY));
+        saveMenuItem.setAccelerator(new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN));
         closeMenuItem.setOnAction(event -> onExit());
-        closeMenuItem.setAccelerator(new KeyCodeCombination(KeyCode.C, KeyCombination.CONTROL_ANY));
+        closeMenuItem.setAccelerator(new KeyCodeCombination(KeyCode.C, KeyCombination.CONTROL_DOWN));
         aboutMenuItem.setOnAction(event -> onHelp());
-        aboutMenuItem.setAccelerator(new KeyCodeCombination(KeyCode.H, KeyCombination.CONTROL_ANY));
+        aboutMenuItem.setAccelerator(new KeyCodeCombination(KeyCode.H, KeyCombination.CONTROL_DOWN));
         TreeItem<String> root = new TreeItem<>();
         root.setExpanded(true);
         view.setRoot(root);
@@ -465,12 +465,22 @@ public class CatalogController {
                     alert.setHeaderText(Localisation.EMPTY_NAME);
                     alert.show();
                 } else {
+                    if (name.getText().contains(",")) {
+                        alert.setHeaderText(Localisation.USED_COMMA + " in name");
+                        alert.show();
+                        return;
+                    }
                     type.setName(name.getText());
                     List<String> fieldTypes = new ArrayList<>();
 
                     for (TextField f : textFields) {
                         if (f.getText().isBlank()) {
                             alert.setHeaderText(Localisation.BLANK_FIELD);
+                            alert.show();
+                            return;
+                        }
+                        if (f.getText().contains(",")) {
+                            alert.setHeaderText(Localisation.USED_COMMA + " in fields");
                             alert.show();
                             return;
                         }
@@ -518,22 +528,44 @@ public class CatalogController {
                     alert.setHeaderText(Localisation.EMPTY_NAME);
                     alert.show();
                 } else {
+                    if (name.getText().contains(",")) {
+                        alert.setHeaderText(Localisation.USED_COMMA + " in name");
+                        alert.show();
+                        return;
+                    }
                     item.setName(name.getText());
                     List<String> fieldValues = new ArrayList<>();
 
                     for (TextField f : textFields) {
+                        if (f.getText().contains(",")) {
+                            alert.setHeaderText(Localisation.USED_COMMA + " in fields");
+                            alert.show();
+                            return;
+                        }
                         fieldValues.add(f.getText());
                     }
                     item.setFieldValues(fieldValues);
                     Set<String> tags2 = new HashSet<>();
-                    String[] trimmedTags = tagsField.getText().trim().split(",");
+                    String[] trimmedTags = tagsField.getText().split(",");
 
                     for (int i = 0; i < trimmedTags.length; i++) {
                         trimmedTags[i] = trimmedTags[i].trim();
+
+                        if (trimmedTags[i].isBlank() && !tagsField.getText().isBlank()) {
+                            alert.setHeaderText(Localisation.EMPTY_TAG);
+                            alert.show();
+                            return;
+                        }
                     }
-                    Collections.addAll(tags2, trimmedTags);
-                    item.setTags(tags2);
-                    tagRefresh();
+
+                    if (!tagsField.getText().isBlank()) {
+                        Collections.addAll(tags2, trimmedTags);
+                        item.setTags(tags2);
+                        tagRefresh();
+                    } else {
+                        item.setTags(new HashSet<>());
+                        tagRefresh();
+                    }
                     onSelect();
                 }
             }
