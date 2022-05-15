@@ -179,11 +179,15 @@ public class CatalogController {
     }
 
     private void onSave() {
+        Alert alert;
         try {
             typeContainer.write();
             itemContainer.write();
+            alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setHeaderText("Save successful");
+            alert.show();
         } catch (IOException e) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert = new Alert(Alert.AlertType.ERROR);
             alert.setHeaderText(e.getMessage());
             alert.show();
         }
