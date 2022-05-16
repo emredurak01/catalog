@@ -228,7 +228,10 @@ public class CatalogController {
                 view.getRoot().getChildren().add(item.getType());
             }
         }
-        view.getRoot().getChildren().removeIf(type -> type.getChildren().isEmpty());
+
+        if (!searchField.getText().isBlank() || !selectedTags.isEmpty()) {
+            view.getRoot().getChildren().removeIf(type -> type.getChildren().isEmpty());
+        }
     }
 
     private void onSelect() {

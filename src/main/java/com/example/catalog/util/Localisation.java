@@ -13,9 +13,8 @@ public class Localisation {
     """;
     public static final String HELP_SEARCH_TEXT = """
     1. Use the checkboxes at right to filter items by tags.
-    2. Use search bar at top to filter items and types by name.
+    2. Use search bar at top to filter items by their name, type and tag.
     3. All these operations can filter the items and types simultaneously.
-    WARNING: If you filter by type name, the items of that type are not shown, since you are not interested in the items.
     """;
     public static final String HELP_SAVE_TEXT = """
     1. Click the save button. It should create the necessary data files with the .save extension.
