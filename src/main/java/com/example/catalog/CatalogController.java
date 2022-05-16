@@ -216,16 +216,14 @@ public class CatalogController {
         List<Item> filteredItems = new ArrayList<>(itemContainer.getAll());
         view.getRoot().getChildren().clear();
 
-        if (selectedTags.isEmpty()) {
-            for (Type type : typeContainer.getAll()) {
-                if (type.getName().contains(value)) {
-                    view.getRoot().getChildren().add(type);
-                }
+        for (Type type : typeContainer.getAll()) {
+            if (type.getName().contains(value)) {
+                view.getRoot().getChildren().add(type);
             }
         }
 
         for (Item item : itemContainer.getAll()) {
-            if (!item.getName().contains(value) || !itemContainer.getByTags(selectedTags).contains(item)) {
+            if (!item.getName().contains(value) && !isInView(item.getType().getName()) || !itemContainer.getByTags(selectedTags).contains(item)) {
                 item.getType().getChildren().remove(item);
                 filteredItems.remove(item);
                 removedItems.add(item);
