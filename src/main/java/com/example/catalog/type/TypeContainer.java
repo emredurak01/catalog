@@ -1,13 +1,13 @@
 package com.example.catalog.type;
 
 
-import com.example.catalog.item.ItemContainer;
 import com.example.catalog.exception.type.TypeExistException;
 import com.example.catalog.exception.type.TypeNotExistException;
+import com.example.catalog.item.ItemContainer;
 import javafx.scene.control.TreeView;
 
-import java.io.*;
-import java.nio.file.Path;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.*;
 

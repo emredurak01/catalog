@@ -40,7 +40,7 @@ public class Localisation {
     public static final String BLANK_TAG = "Tag is blank";
     public static final String USED_COMMA = "Comma is not allowed";
     public static final String EMPTY_TAG = "Tag can not be blank";
-    public static final String SAVE_SUCCESS = "Successful save";
+    public static final String SAVE_SUCCESS = "Save successful";
     public static final String SHORTCUT = """
             Ctrl + S = Save
             Ctrl + E = Export

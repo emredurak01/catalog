@@ -2,10 +2,8 @@ package com.example.catalog.type;
 
 import com.example.catalog.exception.field.FieldExistException;
 import com.example.catalog.exception.field.FieldNotExistException;
-import com.example.catalog.item.Item;
 import javafx.scene.control.TreeItem;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
