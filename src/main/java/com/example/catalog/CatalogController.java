@@ -223,7 +223,7 @@ public class CatalogController {
         }
 
         for (Item item : itemContainer.getAll()) {
-            if (!item.getName().contains(value) && !isInView(item.getType().getName()) || !itemContainer.getByTags(selectedTags).contains(item)) {
+            if (!item.getName().contains(value) && !isInView(item.getType().getName()) && !item.getTags().contains(value) || !itemContainer.getByTags(selectedTags).contains(item)) {
                 item.getType().getChildren().remove(item);
                 filteredItems.remove(item);
                 removedItems.add(item);
@@ -235,6 +235,7 @@ public class CatalogController {
                 view.getRoot().getChildren().add(item.getType());
             }
         }
+        view.getRoot().getChildren().removeIf(type -> type.getChildren().isEmpty());
     }
 
     private void onSelect() {
