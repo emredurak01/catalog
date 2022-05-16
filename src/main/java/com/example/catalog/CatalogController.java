@@ -26,6 +26,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -265,6 +266,7 @@ public class CatalogController {
         try {
             Parent parent = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("help.fxml")));
             Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
             stage.setTitle("Help");
             stage.setScene(new Scene(parent, 600, 400));
             stage.setMinWidth(605);
