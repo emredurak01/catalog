@@ -217,7 +217,7 @@ public class CatalogController {
         }
 
         for (Item item : itemContainer.getAll()) {
-            if (!item.getName().contains(value) && !isInView(item.getType().getName()) && !item.getTags().contains(value) || !itemContainer.getByTags(selectedTags).contains(item)) {
+            if (!item.getName().contains(value) && !isInView(item.getType().getName() )&& !item.getFieldValues().contains(value) && !item.getTags().contains(value) || !itemContainer.getByTags(selectedTags).contains(item)) {
                 item.getType().getChildren().remove(item);
                 filteredItems.remove(item);
                 removedItems.add(item);
