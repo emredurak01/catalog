@@ -33,7 +33,7 @@ javafx {
 dependencies {
 
     implementation 'junit:junit:4.13.2'
-    implementation 'org.testng:testng:7.5'
+    implementation 'org.testng:testng:7.6.0'
     testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
 }
@@ -54,6 +54,8 @@ jlinkZip {
     group = 'distribution'
 }
 
+/*
+uncomment the below block when the packaging is needed
 jar {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     manifest {
@@ -63,3 +65,4 @@ jar {
         configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
     }
 }
+*/

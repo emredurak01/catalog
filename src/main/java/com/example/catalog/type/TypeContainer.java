@@ -24,16 +24,19 @@ public class TypeContainer {
             get(type.getName());
             throw new TypeExistException();
         } catch (TypeNotExistException e) {
-            types.add(type);
-            view.getRoot().getChildren().add(type);
-        }
-    }
+            if (!type.getName().isBlank()) {
+                boolean[] flag = {true};
+                type.getFieldTypes().forEach(s -> {
+                    if (s.isBlank()) {
+                        flag[0] = false;
+                    }
+                });
 
-    public void refresh(TreeView<String> view) {
-        view.getRoot().getChildren().clear();
-
-        for (Type type : types) {
-            view.getRoot().getChildren().add(type);
+                if (flag[0]) {
+                    types.add(type);
+                }
+                view.getRoot().getChildren().add(type);
+            }
         }
     }
 

@@ -68,8 +68,9 @@ public class Item extends TreeItem<String> {
         if (tags.contains(tag)) {
             throw new TagExistException();
         }
-
-        tags.add(tag);
+        if (!tag.isBlank()) {
+            tags.add(tag);
+        }
     }
 
     public void removeTag(String tag) throws TagNotExistException {

@@ -21,8 +21,10 @@ public class ItemContainer {
     }
 
     public void add(Item item) {
-        items.add(item);
-        item.getType().getChildren().add(item);
+        if (!item.getName().isBlank()) {
+            items.add(item);
+            item.getType().getChildren().add(item);
+        }
     }
 
     public void remove(Item item) throws ItemNotExistException {
